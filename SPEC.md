@@ -16,7 +16,7 @@ Industrial control system meets modern dashboard. Inspired by Bloomberg Terminal
 ### Color Palette
 ```
 --bg-primary:    #0d0d0f   (near-black base)
---bg-secondary: #161618   (panel surfaces)
+--bg-secondary:  #161618   (panel surfaces)
 --bg-tertiary:   #1e1e21   (elevated cards)
 --border:        #2a2a2e   (subtle dividers)
 --text-primary:  #e8e8ec   (high-contrast text)
@@ -51,9 +51,9 @@ Industrial control system meets modern dashboard. Inspired by Bloomberg Terminal
 │  HEADER: Logo | Phase: N/M | Status Badge | Time    │
 ├─────────────────────────────────────────────────────┤
 │  ┌─────────────┐  ┌───────────────────────────────┐  │
-│  │  PIPELINE   │  │  CURRENT PHASE DETAIL        │  │
-│  │  TIMELINE   │  │  ├─ Goals                    │  │
-│  │  (vertical) │  │  ├─ Files                    │  │
+│  │  PIPELINE   │  │  CURRENT PHASE DETAIL          │  │
+│  │  TIMELINE   │  │  ├─ Goals                      │  │
+│  │  (vertical) │  │  ├─ Files                      │  │
 │  │  Phase 0 ✓  │  │  ├─ Acceptance Criteria      │  │
 │  │  Phase 1 ●  │  │  └─ Agent Activity Log       │  │
 │  │  Phase 2 ○  │  ├───────────────────────────────┤  │
@@ -76,7 +76,7 @@ Industrial control system meets modern dashboard. Inspired by Bloomberg Terminal
 ### Core Features
 
 **F1 — Phase State Display**
-- Shows all 6 phases in vertical timeline
+- Shows all 9 phases in vertical timeline
 - Each phase: icon (pending/running/complete/blocked), name, timestamp
 - Current phase expands to show detail panel
 - Clicking a phase shows its spec and artifacts (read-only)
@@ -200,7 +200,7 @@ scripts/
 ```typescript
 interface PipelineState {
   version: string;
-  currentPhase: number;        // 0-5
+  currentPhase: number;        // 0-8
   phases: {
     [phase: number]: {
       status: 'pending' | 'in-progress' | 'complete' | 'blocked';
@@ -244,40 +244,72 @@ interface GateResult {
 - [x] Create state.json with phase 0 complete
 
 ### Phase 1 — Core Orchestrator
-- Implement `orchestrator.ts` (phase state machine)
-- Implement `state-store.ts` (read/write state.json)
-- Implement `log-writer.ts`
-- Implement `scripts/plan-agent.sh`, `implement-agent.sh`, `test-agent.sh`
-- Implement `pipeline/state.json` initial state
+- [x] Implement `orchestrator.ts` (phase state machine)
+- [x] Implement `state-store.ts` (read/write state.json)
+- [x] Implement `log-writer.ts`
+- [x] Implement `scripts/plan-agent.sh`, `implement-agent.sh`, `test-agent.sh`
+- [x] Implement `pipeline/state.json` initial state
+- [x] 52 unit tests, all gates pass
 
 ### Phase 2 — Dashboard UI
-- Implement all React components
-- Implement Next.js pages and API routes
-- Implement SSE log stream endpoint
-- Wire up frontend to state.json
+- [x] Implement all React components
+- [x] Implement Next.js pages and API routes
+- [x] Implement SSE log stream endpoint
+- [x] Wire up frontend to state.json
+- [x] Quality gates: types ✅, tests ✅, lint ⚠️ (ESLint v10/v9 config incompatibility — pre-existing)
 
 ### Phase 3 — Agent Integration
-- Implement `agent-spawner.ts`
-- Connect agents to orchestrator
-- Implement live log streaming to dashboard
-- Implement quality gate execution
+- [x] Implement `agent-spawner.ts`
+- [x] Connect agents to orchestrator
+- [x] Implement live log streaming to dashboard
+- [x] Implement quality gate execution
+- [x] 136 total tests, all gates pass
 
 ### Phase 4 — Polish & Hardening
-- Error handling, edge cases
-- Timeout and retry logic
-- Override safety checks
-- UI polish
+- [x] Error handling, edge cases
+- [x] Timeout and retry logic
+- [x] Override safety checks
+- [x] UI polish
+- [x] 27 Phase 4 tests pass
 
-### Phase 5 — Finalize
-- Self-audit: does the app pass its own quality gates?
-- Documentation
-- Git branch merge to main
-- Tag v1.0.0
+### Phase 5 — Result Panel + History
+- [x] ResultPanel: image display, download, "use as reference"
+- [x] HistoryPanel: generation history sidebar
+- [x] 163 tests across 11 test files, all pass
+
+### Phase 6 — Tabbed Studio Layout
+- [ ] Tab bar: Image | Video | Cinema | LipSync
+- [ ] ImageTab assembly from Phase 3–5 components
+- [ ] VideoTab: duration selector, start-frame selector, video player
+- [ ] CinemaTab: CinemaCameraControls (lens/focal/aperture/camera body → prompt suffix)
+- [ ] LipSyncTab: portrait + audio upload, waveform preview
+
+### Phase 7 — Inpaint/Canvas Editor
+- [ ] InpaintCanvas: HTML5 canvas, zoom/pan, paint/mask mode
+- [ ] MaskControls: brush size, hardness, eraser, clear mask
+- [ ] CanvasToolbar: Pan, Brush, Eraser, Zoom, Undo/Redo, Inpaint trigger
+- [ ] InpaintResultPanel: before/after, "Use as new base"
+- [ ] InpaintHistory: per-image version stack
+- [ ] Inpaint API route + provider support
+
+### Phase 8 — Comparison Slider + Polish
+- [ ] ComparisonSlider: draggable before/after divider
+- [ ] Toast notifications (success/error feedback)
+- [ ] Upload API route
+- [ ] Keyboard shortcuts (Cmd+Enter to generate, etc.)
+- [ ] Empty states, responsive layout
+
+### Phase 9 — Finalize
+- [ ] Self-audit: does the app pass its own quality gates?
+- [ ] Documentation
+- [ ] Git branch merge to main
+- [ ] Tag v1.0.0
 
 ---
 
 ## Metadata
-- SPEC version: 1.0.0
+- SPEC version: 1.1.0
 - Created: 2026-05-01
-- Phase: 0 of 5
-- Status: in-progress
+- Updated: 2026-05-02
+- Phase: 0–5 complete, resuming at Phase 6
+- Status: in_progress
