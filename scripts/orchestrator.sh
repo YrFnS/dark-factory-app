@@ -33,28 +33,29 @@ get_phase_status() {
 set_phase_status() {
     local p=$1
     local status=$2
-    python3 <<EOF
-import json, sys
+    local ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+    python3 -c "
+import json
 with open('$STATE_FILE', 'r') as f:
     d = json.load(f)
 d['phases']['$p']['status'] = '$status'
 if '$status' == 'in-progress':
-    d['phases']['$p']['startedAt'] = '$(date -u +%Y-%m-%dT%H:%M:%SZ)'
+    d['phases']['$p']['startedAt'] = '$ts'
 with open('$STATE_FILE', 'w') as f:
     json.dump(d, f, indent=2)
-EOF
+"
 }
 
 advance_phase() {
     local next=$1
-    python3 <<EOF
+    python3 -c "
 import json
 with open('$STATE_FILE', 'r') as f:
     d = json.load(f)
 d['currentPhase'] = $next
 with open('$STATE_FILE', 'w') as f:
     json.dump(d, f, indent=2)
-EOF
+"
     log "Advanced to phase $next"
 }
 

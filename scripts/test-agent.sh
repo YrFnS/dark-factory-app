@@ -10,10 +10,32 @@ APP_DIR="$(dirname "$SCRIPT_DIR")"
 PHASE_DIR="$APP_DIR/pipeline/phase-${PHASE_NUM}"
 CODE_DIR="$PHASE_DIR/code"
 STATE_FILE="$APP_DIR/pipeline/state.json"
+ORCHESTRATOR_PID_FILE="/tmp/dark-factory-orchestrator.pid"
 
 log() {
     echo "[$(date '+%Y-%m-%dT%H:%M:%SZ')] [TEST-AGENT] INFO: $1"
 }
+
+log_error() {
+    echo "[$(date '+%Y-%m-%dT%H:%M:%SZ')] [TEST-AGENT] ERROR: $1" >&2
+}
+
+# Check orchestrator PID lock — ensure orchestrator is running before starting
+check_orchestrator_lock() {
+    if [ -f "$ORCHESTRATOR_PID_FILE" ]; then
+        OLD_PID=$(cat "$ORCHESTRATOR_PID_FILE" 2>/dev/null || echo "")
+        if [ -n "$OLD_PID" ] && kill -0 "$OLD_PID" 2>/dev/null; then
+            log "Orchestrator is running (PID $OLD_PID). Test agent waiting..."
+            # Wait for orchestrator to finish
+            while [ -f "$ORCHESTRATOR_PID_FILE" ]; do
+                sleep 1
+            done
+            log "Orchestrator finished. Proceeding with test agent."
+        fi
+    fi
+}
+
+check_orchestrator_lock
 
 log "Test agent started for phase $PHASE_NUM"
 

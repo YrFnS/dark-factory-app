@@ -1,0 +1,6 @@
+# Archon Global Configuration for Dark Factory App
+# Provider: Claude Code (claude CLI)
+assistants:
+  claude:
+    claudeBinaryPath: /home/lich/.local/bin/claude
+    model: sonnet

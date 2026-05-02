@@ -9,10 +9,32 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_DIR="$(dirname "$SCRIPT_DIR")"
 SPEC_FILE="$APP_DIR/specs/in-progress/PHASE-${PHASE_NUM}.md"
 STATE_FILE="$APP_DIR/pipeline/state.json"
+ORCHESTRATOR_PID_FILE="/tmp/dark-factory-orchestrator.pid"
 
 log() {
     echo "[$(date '+%Y-%m-%dT%H:%M:%SZ')] [PLAN-AGENT] INFO: $1"
 }
+
+log_error() {
+    echo "[$(date '+%Y-%m-%dT%H:%M:%SZ')] [PLAN-AGENT] ERROR: $1" >&2
+}
+
+# Check orchestrator PID lock — ensure orchestrator is running before starting
+check_orchestrator_lock() {
+    if [ -f "$ORCHESTRATOR_PID_FILE" ]; then
+        OLD_PID=$(cat "$ORCHESTRATOR_PID_FILE" 2>/dev/null || echo "")
+        if [ -n "$OLD_PID" ] && kill -0 "$OLD_PID" 2>/dev/null; then
+            log "Orchestrator is running (PID $OLD_PID). Plan agent waiting..."
+            # Wait for orchestrator to finish
+            while [ -f "$ORCHESTRATOR_PID_FILE" ]; do
+                sleep 1
+            done
+            log "Orchestrator finished. Proceeding with plan agent."
+        fi
+    fi
+}
+
+check_orchestrator_lock
 
 log "Plan agent started for phase $PHASE_NUM"
 

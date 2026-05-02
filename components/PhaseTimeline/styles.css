@@ -1,0 +1,135 @@
+.phase-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.phase-node {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: background-color 150ms ease;
+}
+
+.phase-node:hover {
+  background: var(--bg-secondary);
+}
+
+.phase-node:focus-visible {
+  outline: 2px solid var(--accent-amber);
+  outline-offset: -2px;
+}
+
+/* Current phase amber left border */
+.phase-node--current {
+  border-left-color: var(--accent-amber);
+}
+
+/* Status icon base styles */
+.phase-status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Pending - hollow circle */
+.phase-status-icon--pending {
+  color: #6b7280;
+}
+
+/* In-progress - filled circle with amber glow */
+.phase-status-icon--in-progress {
+  color: var(--accent-amber);
+  animation: amber-glow 2s ease-in-out infinite;
+}
+
+/* Complete - green checkmark */
+.phase-status-icon--complete {
+  color: var(--accent-green);
+}
+
+/* Blocked - red X */
+.phase-status-icon--blocked {
+  color: var(--accent-red);
+}
+
+@keyframes amber-glow {
+  0%, 100% {
+    text-shadow: 0 0 4px var(--accent-amber), 0 0 8px var(--accent-amber);
+  }
+  50% {
+    text-shadow: 0 0 8px var(--accent-amber), 0 0 16px var(--accent-amber), 0 0 24px var(--accent-amber);
+  }
+}
+
+/* Phase node indicator area */
+.phase-node__indicator {
+  display: flex;
+  align-items: center;
+  padding-top: 0.125rem;
+}
+
+/* Content area */
+.phase-node__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.phase-node__header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.phase-node__number {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.phase-node__name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #f3f4f6;
+}
+
+.phase-node__timestamp {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-variant-numeric: tabular-nums;
+}
+
+/* In-progress phase node styling */
+.phase-node--in-progress .phase-node__name {
+  color: var(--accent-amber);
+}
+
+/* Complete phase node styling */
+.phase-node--complete .phase-node__number {
+  color: var(--accent-green);
+}
+
+/* Blocked phase node styling */
+.phase-node--blocked .phase-node__number {
+  color: var(--accent-red);
+}
