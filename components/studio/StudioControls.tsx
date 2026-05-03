@@ -44,7 +44,7 @@ export function PromptInput({
         }
         .prompt-textarea:focus {
           outline: none;
-          border-color: #3b82f6;
+          border-color: #d9ff00;
         }
         .prompt-textarea::placeholder { color: #444; }
       `}</style>
@@ -91,7 +91,7 @@ export function ModelSelector({
           cursor: pointer;
           font-family: inherit;
         }
-        .model-select:focus { outline: none; border-color: #3b82f6; }
+        .model-select:focus { outline: none; border-color: #d9ff00; }
       `}</style>
     </div>
   );
@@ -152,14 +152,13 @@ export function ReferencePicker({
         .ref-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 4px; }
         .ref-upload-btn {
           font-size: 0.75rem;
-          color: #3b82f6;
+          color: #d9ff00;
           cursor: pointer;
           padding: 6px 12px;
-          border: 1px solid #3b82f6;
-          border-radius: 4px;
+          border: 1px solid #d9ff00;
           transition: background 0.2s;
         }
-        .ref-upload-btn:hover { background: rgba(59,130,246,0.1); }
+        .ref-upload-btn:hover { background: rgba(217,255,0,0.1); }
       `}</style>
     </div>
   );
@@ -214,8 +213,8 @@ export function StylePresets({ label, value, onChange }: StylePresetsProps): JSX
           transition: all 0.15s;
           font-family: inherit;
         }
-        .preset-btn:hover { border-color: #3b82f6; color: #ccc; }
-        .preset-btn--active { border-color: #3b82f6; background: rgba(59,130,246,0.15); color: #60a5fa; }
+        .preset-btn:hover { border-color: #d9ff00; color: #ccc; }
+        .preset-btn--active { border-color: #d9ff00; background: rgba(217,255,0,0.12); color: #d9ff00; }
       `}</style>
     </div>
   );
@@ -299,7 +298,7 @@ export function SmartControls({
           width: 100px;
           font-family: inherit;
         }
-        .control-input:focus { outline: none; border-color: #3b82f6; }
+        .control-input:focus { outline: none; border-color: #d9ff00; }
         .random-btn {
           font-size: 0.7rem;
           padding: 5px 10px;
@@ -311,8 +310,8 @@ export function SmartControls({
           font-family: inherit;
           transition: all 0.15s;
         }
-        .random-btn:hover { border-color: #3b82f6; color: #60a5fa; }
-        .control-slider { flex: 1; accent-color: #3b82f6; cursor: pointer; }
+        .random-btn:hover { border-color: #d9ff00; color: #d9ff00; }
+        .control-slider { flex: 1; accent-color: #d9ff00; cursor: pointer; }
         .control-value { font-size: 0.75rem; color: #888; min-width: 30px; text-align: right; }
       `}</style>
     </div>
@@ -341,8 +340,8 @@ export function GenerationButton({ onClick, loading = false, label = 'Generate' 
           padding: 12px;
           border-radius: 6px;
           border: none;
-          background: #3b82f6;
-          color: white;
+          background: #d9ff00;
+          color: black;
           font-size: 0.85rem;
           font-weight: 600;
           cursor: pointer;
@@ -350,9 +349,9 @@ export function GenerationButton({ onClick, loading = false, label = 'Generate' 
           transition: background 0.2s;
           letter-spacing: 0.04em;
         }
-        .gen-btn:hover:not(:disabled) { background: #2563eb; }
+        .gen-btn:hover:not(:disabled) { background: #b8d900; }
         .gen-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        .gen-btn--loading { background: #1d4ed8; }
+        .gen-btn--loading { background: #a3bf00; }
       `}</style>
     </button>
   );
@@ -466,7 +465,7 @@ export function HistoryPanel({ history, onSelect }: HistoryPanelProps): JSX.Elem
           transition: border-color 0.15s;
           font-family: inherit;
         }
-        .history-item:hover { border-color: #3b82f6; }
+        .history-item:hover { border-color: #d9ff00; }
         .history-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
         .history-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
         .history-prompt { font-size: 0.72rem; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
