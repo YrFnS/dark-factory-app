@@ -4,7 +4,7 @@
 
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import type { ImageTabState } from '@/store/useStudioStore';
 import {
   PromptInput,
@@ -16,13 +16,9 @@ import {
   ResultPanel,
   HistoryPanel,
 } from '@/components/studio/StudioControls';
+import { getImageModelOptions, getModelInputs } from '@/lib/model-options';
 
-const MODEL_OPTIONS = [
-  { value: 'sdxl', label: 'SDXL 1.0' },
-  { value: 'sd15', label: 'Stable Diffusion 1.5' },
-  { value: 'sdxl-turbo', label: 'SDXL Turbo' },
-  { value: 'playground-v2', label: 'Playground v2' },
-];
+const MODEL_OPTIONS = getImageModelOptions();
 
 interface ImageTabProps {
   state: ImageTabState;
@@ -30,20 +26,53 @@ interface ImageTabProps {
 }
 
 export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
-  const handleGenerate = useCallback(() => {
-    // Stub: simulate a generated result
-    // Real: call image generation API
-    const resultUrl = 'https://placehold.co/512x512/1a1a2e/3b82f6?text=Generated';
-    const newEntry = {
-      prompt: state.prompt,
-      resultUrl,
-      timestamp: Date.now(),
-    };
-    update({
-      resultUrl,
-      history: [...state.history, newEntry],
-    });
-  }, [state.prompt, state.history, update]);
+  const [loading, setLoading] = useState(false);
+  const modelInputs = getModelInputs(state.model);
+
+  const handleGenerate = useCallback(async () => {
+    if (!state.prompt.trim()) return;
+    setLoading(true);
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'image',
+          model: state.model,
+          prompt: state.prompt,
+          seed: state.seed,
+          referenceImage: state.referenceImage,
+          // Pass through model-specific inputs
+          aspectRatio: state.aspectRatio,
+          width: state.width,
+          height: state.height,
+          quality: state.quality,
+          steps: state.steps,
+          guidance: state.guidance,
+        }),
+      });
+      const data = await res.json();
+      const resultUrl = data?.url ?? null;
+      const newEntry = {
+        prompt: state.prompt,
+        resultUrl: resultUrl ?? 'https://placehold.co/512x512/1a1a2e/d9ff00?text=Generation+Pending',
+        timestamp: Date.now(),
+      };
+      update({
+        resultUrl: resultUrl ?? state.resultUrl,
+        history: [...state.history, newEntry],
+      });
+    } catch {
+      // On error, keep previous result visible
+      update({
+        resultUrl: 'https://placehold.co/512x512/1a1a2e/ef4444?text=Error',
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [state.prompt, state.model, state.seed, state.referenceImage,
+      state.aspectRatio, state.width, state.height, state.quality,
+      state.steps, state.guidance, state.resultUrl, state.history, update]);
 
   return (
     <div className="image-tab">
@@ -70,12 +99,26 @@ export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
             label="Style Preset"
             value={state.stylePreset}
             onChange={(stylePreset) => update({ stylePreset })}
+            onPromptAppend={(mod) => update({ prompt: state.prompt + mod })}
           />
           <SmartControls
             seed={state.seed}
             onSeedChange={(seed) => update({ seed })}
+            modelInputs={modelInputs}
+            aspectRatio={state.aspectRatio}
+            onAspectRatioChange={(aspectRatio) => update({ aspectRatio })}
+            width={state.width}
+            onWidthChange={(width) => update({ width })}
+            height={state.height}
+            onHeightChange={(height) => update({ height })}
+            quality={state.quality}
+            onQualityChange={(quality) => update({ quality })}
+            steps={state.steps}
+            onStepsChange={(steps) => update({ steps })}
+            guidance={state.guidance}
+            onGuidanceChange={(guidance) => update({ guidance })}
           />
-          <GenerationButton onClick={handleGenerate} label="Generate Image" />
+          <GenerationButton onClick={handleGenerate} loading={loading} label="Generate Image" />
         </div>
 
         {/* Right: Output */}
@@ -83,7 +126,10 @@ export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
           <ResultPanel resultUrl={state.resultUrl} type="image" />
           <div className="history-section">
             <h3 className="section-title">History</h3>
-            <HistoryPanel history={state.history} />
+            <HistoryPanel
+              history={state.history}
+              onSelect={(item) => update({ prompt: item.prompt, resultUrl: item.resultUrl })}
+            />
           </div>
         </div>
       </div>

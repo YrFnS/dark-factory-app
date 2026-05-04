@@ -17,6 +17,13 @@ export interface ImageTabState {
   seed: number | null;
   resultUrl: string | null;
   history: Array<{ prompt: string; resultUrl: string; timestamp: number }>;
+  // SmartControls state — optional fields driven by model inputs
+  aspectRatio?: string;
+  width?: number;
+  height?: number;
+  quality?: string;
+  steps?: number;
+  guidance?: number;
 }
 
 export interface VideoTabState {
@@ -72,7 +79,7 @@ const DEFAULT_STATE: StudioState = {
   },
   videoTab: {
     prompt: '',
-    model: 'zeroscope',
+    model: 'zeroscope-v2',
     duration: 5,
     startFrame: 0,
     loop: false,
@@ -81,7 +88,7 @@ const DEFAULT_STATE: StudioState = {
   },
   cinemaTab: {
     prompt: '',
-    model: 'sdxl-cinema',
+    model: 'sdxl',
     lensType: 'Cinema Prime',
     focalLength: 50,
     aperture: 2.8,
