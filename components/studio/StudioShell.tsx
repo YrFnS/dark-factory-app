@@ -2,6 +2,7 @@
 
 import { useStudioStore, type TabId } from '@/store/useStudioStore';
 import { Tabs, type Tab } from '@/components/ui/Tabs';
+import { Header } from '@/components/studio/Header';
 import { ImageTab } from '@/components/tabs/ImageTab';
 import { VideoTab } from '@/components/tabs/VideoTab';
 import { CinemaTab } from '@/components/tabs/CinemaTab';
@@ -71,10 +72,7 @@ export function StudioShell({ className }: StudioShellProps): JSX.Element {
 
   return (
     <div className={`studio-shell ${className ?? ''}`}>
-      <header className="studio-header">
-        <span className="studio-logo">DARK FACTORY</span>
-        <span className="studio-tagline">Studio</span>
-      </header>
+      <Header />
 
       <Tabs
         tabs={STUDIO_TABS}
@@ -98,27 +96,6 @@ export function StudioShell({ className }: StudioShellProps): JSX.Element {
           height: 100vh;
           background: #0a0a0c;
           color: #e2e2e8;
-        }
-        .studio-header {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 16px 24px;
-          border-bottom: 1px solid #1e1e22;
-          background: #0d0d0f;
-          flex-shrink: 0;
-        }
-        .studio-logo {
-          font-size: 0.85rem;
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          color: #3b82f6;
-          text-transform: uppercase;
-        }
-        .studio-tagline {
-          font-size: 0.75rem;
-          color: #4a4a55;
-          font-weight: 400;
         }
         .studio-content {
           flex: 1;
