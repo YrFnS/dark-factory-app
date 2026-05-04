@@ -135,15 +135,15 @@ Check off items as they complete. Cron job reads this to pick the next task.
 - [x] Phase 1: Build `components/studio/Header.tsx` — app name left, gear icon opens settings
 - [x] Phase 1: Fix accent color #3b82f6 → #d9ff00 in globals.css and all inline styles
 
-### Phase 2 — Model Registry + Model Selector
-- [ ] Phase 2: Build `lib/models.ts` — ModelProvider/ModelType/Model interface, 10–15 models across all providers
-- [ ] Phase 2: Wire `ModelSelector` in StudioControls to `lib/models.ts` (replace hardcoded `MODEL_OPTIONS`)
-- [ ] Phase 2: Add provider badge colors (OpenAI=green, Google=blue, Replicate=purple, Muapi=yellow)
+### Phase 2 — Model Registry + Model Selector ✅ DONE
+- [x] Phase 2: Build `lib/models.ts` — ModelProvider/ModelType/Model interface, 10–15 models across all providers
+- [x] Phase 2: Wire `ModelSelector` in StudioControls to `lib/models.ts` (replace hardcoded `MODEL_OPTIONS`)
+- [x] Phase 2: Add provider badge colors (OpenAI=green, Google=blue, Replicate=purple, Muapi=yellow)
 
-### Phase 3 — Smart Controls + Prompt Input
-- [ ] Phase 3: Make `SmartControls` read from `model.inputs` — dynamic aspectRatio/width/height/quality/style rendering
-- [ ] Phase 3: Make `StylePresets` append modifiers to prompt string on click
-- [ ] Phase 3: Wire `GenerationButton` to call `/api/generate` with loading state
+### Phase 3 — Smart Controls + Prompt Input ✅ DONE
+- [x] Phase 3: Make `SmartControls` read from `model.inputs` — dynamic aspectRatio/width/height/quality/style rendering
+- [x] Phase 3: Make `StylePresets` append modifiers to prompt string on click
+- [x] Phase 3: Wire `GenerationButton` to call `/api/generate` with loading state
 
 ### Phase 4 — Reference Picker + Upload History
 - [ ] Phase 4: Build `lib/storage.ts` — getApiKeys/setApiKeys/getUploadHistory/saveUpload/getGenerationHistory/saveGeneration
