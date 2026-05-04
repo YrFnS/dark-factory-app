@@ -143,7 +143,7 @@ export function Tabs({ tabs, activeTab, onTabChange }: TabsProps): JSX.Element {
           cursor: not-allowed;
         }
         .tab-item:focus-visible {
-          outline: 2px solid #3b82f6;
+          outline: 2px solid #d9ff00;
           outline-offset: -2px;
           border-radius: 4px;
         }
@@ -160,7 +160,7 @@ export function Tabs({ tabs, activeTab, onTabChange }: TabsProps): JSX.Element {
           position: absolute;
           bottom: 0;
           height: 2px;
-          background: #3b82f6;
+          background: #d9ff00;
           transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
                       width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
           border-radius: 2px 2px 0 0;

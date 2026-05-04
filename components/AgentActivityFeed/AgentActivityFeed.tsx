@@ -155,7 +155,7 @@ export function AgentActivityFeed({ phaseNumber }: AgentActivityFeedProps): JSX.
         .feed-phase { font-size: 0.7rem; color: #555; font-variant-numeric: tabular-nums; }
         .feed-list { overflow-y: auto; flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 8px; }
         .feed-item { border-radius: 4px; border: 1px solid #2a2a2e; overflow: hidden; }
-        .feed-item--running { border-color: #3b82f6; }
+        .feed-item--running { border-color: #d9ff00; }
         .feed-item--success { border-color: #22c55e; }
         .feed-item--failure { border-color: #ef4444; }
         .feed-item--idle { border-color: #2a2a2e; }

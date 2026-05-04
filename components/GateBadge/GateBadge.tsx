@@ -20,7 +20,7 @@ const STATUS_COLORS: Record<GateStatus, { text: string; icon: string; bg: string
     border: 'border-transparent',
   },
   running: {
-    text: '#3b82f6',
+    text: '#d9ff00',
     icon: '●',
     bg: 'bg-transparent',
     border: 'border-transparent',

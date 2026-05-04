@@ -85,7 +85,7 @@ function formatTimestamp(isoString?: string): string {
 function StatusBadge({ status }: { status: PhaseStatus }): JSX.Element {
   const statusConfig: Record<PhaseStatus, { label: string; color: string; bgColor: string }> = {
     pending: { label: 'Pending', color: '#8b8b94', bgColor: 'rgba(139, 139, 148, 0.1)' },
-    'in-progress': { label: 'In Progress', color: '#3b82f6', bgColor: 'rgba(59, 130, 246, 0.1)' },
+    'in-progress': { label: 'In Progress', color: '#d9ff00', bgColor: 'rgba(217, 255, 0, 0.1)' },
     complete: { label: 'Complete', color: '#22c55e', bgColor: 'rgba(34, 197, 94, 0.1)' },
     blocked: { label: 'Blocked', color: '#ef4444', bgColor: 'rgba(239, 68, 68, 0.1)' },
   };

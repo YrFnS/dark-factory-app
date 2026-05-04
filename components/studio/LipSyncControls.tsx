@@ -29,7 +29,7 @@ function AudioWaveform({ audioUrl }: { audioUrl: string | null }): JSX.Element {
 
     // Draw placeholder waveform bars
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#3b82f6';
+    ctx.fillStyle = '#d9ff00';
     const barCount = 80;
     const barWidth = canvas.width / barCount - 1;
     for (let i = 0; i < barCount; i++) {
@@ -126,7 +126,7 @@ export function LipSyncControls({
         >
           {audioFile ? (
             <div className="audio-info">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d9ff00" strokeWidth="2">
                 <path d="M9 18V5l12-2v13"/>
                 <circle cx="6" cy="18" r="3"/>
                 <circle cx="18" cy="16" r="3"/>
@@ -199,8 +199,8 @@ export function LipSyncControls({
           cursor: default;
         }
         .drop-zone--active {
-          border-color: #3b82f6;
-          background: rgba(59,130,246,0.05);
+          border-color: #d9ff00;
+          background: rgba(217,255,0,0.05);
         }
         .drop-zone--has-file { border-style: solid; border-color: #2a2a2e; }
         .drop-prompt {

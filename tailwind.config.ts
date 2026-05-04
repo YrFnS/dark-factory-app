@@ -17,7 +17,7 @@ const config: Config = {
         'accent-amber': '#f59e0b',
         'accent-red': '#ef4444',
         'accent-green': '#22c55e',
-        'accent-blue': '#3b82f6',
+        'accent-blue': '#d9ff00',
       },
     },
   },

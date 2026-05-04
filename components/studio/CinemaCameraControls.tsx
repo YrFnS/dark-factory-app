@@ -152,9 +152,9 @@ export function CinemaCameraControls({
           cursor: pointer;
           font-family: inherit;
         }
-        .control-select:focus { outline: none; border-color: #3b82f6; }
+        .control-select:focus { outline: none; border-color: #d9ff00; }
         .slider-row { display: flex; align-items: center; gap: 8px; }
-        .control-slider { flex: 1; accent-color: #3b82f6; cursor: pointer; }
+        .control-slider { flex: 1; accent-color: #d9ff00; cursor: pointer; }
         .slider-min, .slider-max { font-size: 0.65rem; color: #555; min-width: 28px; }
         .slider-max { text-align: right; }
         .numeric-input {
@@ -169,7 +169,7 @@ export function CinemaCameraControls({
           text-align: center;
           margin-top: 4px;
         }
-        .numeric-input:focus { outline: none; border-color: #3b82f6; }
+        .numeric-input:focus { outline: none; border-color: #d9ff00; }
         .viewport-preview {
           background: #0d0d0f;
           border: 1px solid #2a2a2e;

@@ -110,14 +110,14 @@ export function VideoControls({
           font-family: inherit;
           transition: all 0.15s;
         }
-        .dur-btn:hover { border-color: #3b82f6; color: #ccc; }
+        .dur-btn:hover { border-color: #d9ff00; color: #ccc; }
         .dur-btn--active {
-          border-color: #3b82f6;
-          background: rgba(59,130,246,0.15);
-          color: #60a5fa;
+          border-color: #d9ff00;
+          background: rgba(217,255,0,0.15);
+          color: #d9ff00;
         }
         .frame-row { display: flex; align-items: center; gap: 10px; }
-        .frame-slider { flex: 1; accent-color: #3b82f6; cursor: pointer; }
+        .frame-slider { flex: 1; accent-color: #d9ff00; cursor: pointer; }
         .frame-input {
           width: 60px;
           background: #0d0d0f;
@@ -129,7 +129,7 @@ export function VideoControls({
           font-family: inherit;
           text-align: center;
         }
-        .frame-input:focus { outline: none; border-color: #3b82f6; }
+        .frame-input:focus { outline: none; border-color: #d9ff00; }
         .loop-toggle {
           width: 44px;
           height: 24px;
@@ -142,7 +142,7 @@ export function VideoControls({
           padding: 0;
           font-family: inherit;
         }
-        .loop-toggle--on { background: rgba(59,130,246,0.3); border-color: #3b82f6; }
+        .loop-toggle--on { background: rgba(217,255,0,0.3); border-color: #d9ff00; }
         .loop-thumb {
           position: absolute;
           top: 2px;
@@ -153,7 +153,7 @@ export function VideoControls({
           background: #555;
           transition: transform 0.2s, background 0.2s;
         }
-        .loop-toggle--on .loop-thumb { transform: translateX(20px); background: #3b82f6; }
+        .loop-toggle--on .loop-thumb { transform: translateX(20px); background: #d9ff00; }
       `}</style>
     </div>
   );

@@ -80,7 +80,7 @@ export function LipSyncResult({ resultUrl }: LipSyncResultProps): JSX.Element {
           cursor: pointer;
           font-family: inherit;
         }
-        .download-btn:hover { border-color: #3b82f6; color: #60a5fa; }
+        .download-btn:hover { border-color: #d9ff00; color: #d9ff00; }
       `}</style>
     </div>
   );

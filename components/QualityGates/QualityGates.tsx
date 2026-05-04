@@ -109,7 +109,7 @@ export function QualityGates({ phaseNumber }: QualityGatesProps): JSX.Element {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: #3b82f6;
+          background: #d9ff00;
           animation: pulse 1.2s ease-in-out infinite;
         }
         @keyframes pulse {
