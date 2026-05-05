@@ -149,13 +149,13 @@ Check off items as they complete. Cron job reads this to pick the next task.
 - [x] Phase 4: Build `lib/storage.ts` — getApiKeys/setApiKeys/getUploadHistory/saveUpload/getGenerationHistory/saveGeneration
 - [x] Phase 4: Add History tab to `ReferencePicker` — grid from localStorage, re-select, hover X to remove
 
-### Phase 5 — API Providers + Generation Route
-- [ ] Phase 5: Build `lib/providers/types.ts` — GenerateParams / GenerateResult interfaces
-- [ ] Phase 5: Build `lib/providers/openai.ts` — OpenAI `/v1/images/generations`
-- [ ] Phase 5: Build `lib/providers/google.ts` — Google Vertex AI Imagen API
-- [ ] Phase 5: Build `lib/providers/replicate.ts` — Replicate API (Flux, SD)
-- [ ] Phase 5: Build `lib/providers/muapi.ts` — Muapi.ai gateway
-- [ ] Phase 5: Build `app/api/generate/route.ts` — dispatch to correct provider, read key from header
+### Phase 5 — API Providers + Generation Route ✅ DONE
+- [x] Phase 5: Build `lib/providers/types.ts` — GenerateParams / GenerateResult interfaces
+- [x] Phase 5: Build `lib/providers/openai.ts` — OpenAI `/v1/images/generations`
+- [x] Phase 5: Build `lib/providers/google.ts` — Google Vertex AI Imagen API
+- [x] Phase 5: Build `lib/providers/replicate.ts` — Replicate API (Flux, SD)
+- [x] Phase 5: Build `lib/providers/muapi.ts` — Muapi.ai gateway
+- [x] Phase 5: Build `app/api/generate/route.ts` — dispatch to correct provider, read key from header
 
 ### Phase 6 — Result Panel + History
 - [ ] Phase 6: Add download button to `ResultPanel`
@@ -342,12 +342,12 @@ Check off items as they complete. Cron job reads this to pick the next task.
 ## Feature Summary
 
 | Phase | Features | Status | Files |
-|-------|---------|--------|-------|
+|---|---------|--------|-------|
 | 1 | Project scaffold, dark theme, Button, Modal, Settings page | ⚠️ Partial — scaffold done, Button/Modal/Settings missing | 8 total, 5 remaining |
 | 2 | Model registry (`models.ts`), Zustand store, ModelSelector | ❌ Not started — store done, registry missing | 4 total, all remaining |
 | 3 | SmartControls (dynamic), PromptInput, StylePresets, GenerationButton | ⚠️ Stubs exist — not dynamic, no API wiring | 4 total, all to redo |
 | 4 | Storage helpers, ReferencePicker (upload + history) | ⚠️ Partial — upload stub exists, history missing | 3 total, 2 remaining |
-| 5 | Provider clients (OpenAI, Google, Replicate, Muapi), generate API route | ❌ Not started | 6 total, all remaining |
+| 5 | Provider clients (OpenAI, Google, Replicate, Muapi), generate API route | ✅ Done — all 6 files implemented, types compile | 6 total, done |
 | 6 | ResultPanel, HistoryPanel | ⚠️ Stubs exist — no persistence, no download | 3 total, all to redo |
 | 7 | Tab bar, ImageTab, VideoTab, CinemaTab, LipSyncTab, CinemaCameraControls | ✅ Done — layout wired, content is stub | 7 total, done |
 | 8 | InpaintCanvas, MaskControls, CanvasToolbar, InpaintResultPanel, InpaintHistory, utils helpers | ❌ Not started | 6 total |
