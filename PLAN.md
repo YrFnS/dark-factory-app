@@ -135,19 +135,22 @@ Check off items as they complete. Cron job reads this to pick the next task.
 - [x] Phase 1: Build `components/studio/Header.tsx` — app name left, gear icon opens settings
 - [x] Phase 1: Fix accent color #3b82f6 → #d9ff00 in globals.css and all inline styles
 
-### Phase 2 — Model Registry + Model Selector ✅ DONE
+### Phase 2 — Model Registry + Model Selector
 - [x] Phase 2: Build `lib/models.ts` — ModelProvider/ModelType/Model interface, 10–15 models across all providers
+- [x] Phase 2: Build `components/studio/ModelSelector.tsx` — dropdown with search + provider badge (currently missing from codebase)
 - [x] Phase 2: Wire `ModelSelector` in StudioControls to `lib/models.ts` (replace hardcoded `MODEL_OPTIONS`)
 - [x] Phase 2: Add provider badge colors (OpenAI=green, Google=blue, Replicate=purple, Muapi=yellow)
 
-### Phase 3 — Smart Controls + Prompt Input ✅ DONE
-- [x] Phase 3: Make `SmartControls` read from `model.inputs` — dynamic aspectRatio/width/height/quality/style rendering
-- [x] Phase 3: Make `StylePresets` append modifiers to prompt string on click
-- [x] Phase 3: Wire `GenerationButton` to call `/api/generate` with loading state
+### Phase 3 — Smart Controls + Prompt Input
+- [ ] Phase 3: Build `components/studio/SmartControls.tsx` — dynamic controls from `model.inputs` (currently missing)
+- [ ] Phase 3: Build `components/studio/StylePresets.tsx` — horizontal scroll preset cards (currently missing)
+- [ ] Phase 3: Build `components/studio/GenerationButton.tsx` — generate CTA with loading state (currently missing)
+- [ ] Phase 3: Make `StylePresets` append modifiers to prompt string on click
+- [ ] Phase 3: Wire `GenerationButton` to call `/api/generate` with loading state
 
 ### Phase 4 — Reference Picker + Upload History
 - [x] Phase 4: Build `lib/storage.ts` — getApiKeys/setApiKeys/getUploadHistory/saveUpload/getGenerationHistory/saveGeneration
-- [x] Phase 4: Add History tab to `ReferencePicker` — grid from localStorage, re-select, hover X to remove
+- [ ] Phase 4: Build `components/studio/ReferencePicker.tsx` — multi-image upload + history tab (currently missing)
 
 ### Phase 5 — API Providers + Generation Route ✅ DONE
 - [x] Phase 5: Build `lib/providers/types.ts` — GenerateParams / GenerateResult interfaces
@@ -158,9 +161,9 @@ Check off items as they complete. Cron job reads this to pick the next task.
 - [x] Phase 5: Build `app/api/generate/route.ts` — dispatch to correct provider, read key from header
 
 ### Phase 6 — Result Panel + History
-- [ ] Phase 6: Add download button to `ResultPanel`
-- [ ] Phase 6: Wire "Use as reference" in `ResultPanel` → adds to ReferencePicker
-- [ ] Phase 6: Wire `saveGeneration()` to localStorage on completion; restore params on history item click
+- [x] Phase 6: Add download button to `ResultPanel`
+- [x] Phase 6: Wire "Use as reference" in `ResultPanel` → adds to ReferencePicker
+- [x] Phase 6: Wire `saveGeneration()` to localStorage on completion; restore params on history item click
 
 ### Phase 7 — Tabbed Studio Layout ✅ DONE
 - [x] Phase 7: StudioShell, Tabs, ImageTab, VideoTab, CinemaTab, LipSyncTab, CinemaCameraControls — all wired
@@ -342,18 +345,18 @@ Check off items as they complete. Cron job reads this to pick the next task.
 ## Feature Summary
 
 | Phase | Features | Status | Files |
-|---|---------|--------|-------|
-| 1 | Project scaffold, dark theme, Button, Modal, Settings page | ⚠️ Partial — scaffold done, Button/Modal/Settings missing | 8 total, 5 remaining |
-| 2 | Model registry (`models.ts`), Zustand store, ModelSelector | ❌ Not started — store done, registry missing | 4 total, all remaining |
-| 3 | SmartControls (dynamic), PromptInput, StylePresets, GenerationButton | ⚠️ Stubs exist — not dynamic, no API wiring | 4 total, all to redo |
-| 4 | Storage helpers, ReferencePicker (upload + history) | ⚠️ Partial — upload stub exists, history missing | 3 total, 2 remaining |
-| 5 | Provider clients (OpenAI, Google, Replicate, Muapi), generate API route | ✅ Done — all 6 files implemented, types compile | 6 total, done |
-| 6 | ResultPanel, HistoryPanel | ⚠️ Stubs exist — no persistence, no download | 3 total, all to redo |
-| 7 | Tab bar, ImageTab, VideoTab, CinemaTab, LipSyncTab, CinemaCameraControls | ✅ Done — layout wired, content is stub | 7 total, done |
+| --- | --- | --- | --- |
+| 1 | Project scaffold, dark theme, Button, Modal, Settings page | ✅ Done — scaffold, Button, Modal, Settings, Header, accent color all implemented | 8 total, done |
+| 2 | Model registry (`models.ts`), ModelSelector component | ✅ Done — `lib/models.ts` + `ModelSelector.tsx` with search + provider badges + ImageTab wired | 4 total, all done |
+| 3 | SmartControls, StylePresets, GenerationButton | ❌ NOT DONE — all 3 components MISSING from codebase | 4 total, all missing |
+| 4 | Storage helpers, ReferencePicker | ⚠️ PARTIAL — `lib/storage.ts` exists, but `ReferencePicker.tsx` is MISSING | 3 total, 1 missing |
+| 5 | Provider clients (OpenAI, Google, Replicate, Muapi), generate API route | ✅ Done — all 4 providers + dispatch route implemented | 6 total, done |
+| 6 | ResultPanel (download, use-as-ref), HistoryPanel (localStorage), saveGeneration wired | ✅ Done — download button, use-as-reference, localStorage persistence all implemented | 2 new files + 3 tab files updated |
+| 7 | Tab bar, ImageTab, VideoTab, CinemaTab, LipSyncTab, CinemaCameraControls | ✅ Done — studio shell fully wired | 7 total, done |
 | 8 | InpaintCanvas, MaskControls, CanvasToolbar, InpaintResultPanel, InpaintHistory, utils helpers | ❌ Not started | 6 total |
 | 9 | ComparisonSlider, Toast, upload route, keyboard shortcuts, responsive | ❌ Not started | 5 total |
 
-**Overall: ~46 files. ~28 files remaining. App is a running UI shell (~60% done for structure, ~0% for functionality).**
+**Overall: ~46 files. ~28 files remaining. Verified against actual codebase: Phases 1,5,6,7 fully done. Phases 2,3,4 partially done but plan overstated completion. Phases 8,9 not started.**
 
 ---
 
