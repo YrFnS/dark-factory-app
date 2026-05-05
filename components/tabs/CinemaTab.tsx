@@ -15,12 +15,9 @@ import {
 } from '@/components/studio/StudioControls';
 import { CinemaCameraControls } from '@/components/studio/CinemaCameraControls';
 import { translateCinemaSettings } from '@/components/studio/CinemaCameraControls';
+import { getImageModelOptions } from '@/lib/model-options';
 
-const MODEL_OPTIONS = [
-  { value: 'sdxl-cinema', label: 'SDXL Cinema' },
-  { value: 'sdxl', label: 'SDXL 1.0' },
-  { value: 'playground-cinema', label: 'Playground Cinema' },
-];
+const MODEL_OPTIONS = getImageModelOptions();
 
 interface CinemaTabProps {
   state: CinemaTabState;

@@ -146,8 +146,8 @@ Check off items as they complete. Cron job reads this to pick the next task.
 - [x] Phase 3: Wire `GenerationButton` to call `/api/generate` with loading state
 
 ### Phase 4 — Reference Picker + Upload History
-- [ ] Phase 4: Build `lib/storage.ts` — getApiKeys/setApiKeys/getUploadHistory/saveUpload/getGenerationHistory/saveGeneration
-- [ ] Phase 4: Add History tab to `ReferencePicker` — grid from localStorage, re-select, hover X to remove
+- [x] Phase 4: Build `lib/storage.ts` — getApiKeys/setApiKeys/getUploadHistory/saveUpload/getGenerationHistory/saveGeneration
+- [x] Phase 4: Add History tab to `ReferencePicker` — grid from localStorage, re-select, hover X to remove
 
 ### Phase 5 — API Providers + Generation Route
 - [ ] Phase 5: Build `lib/providers/types.ts` — GenerateParams / GenerateResult interfaces

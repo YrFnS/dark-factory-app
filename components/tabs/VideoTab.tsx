@@ -14,12 +14,9 @@ import {
   HistoryPanel,
 } from '@/components/studio/StudioControls';
 import { VideoControls } from '@/components/studio/VideoControls';
+import { getVideoModelOptions } from '@/lib/model-options';
 
-const MODEL_OPTIONS = [
-  { value: 'zeroscope', label: 'ZeroScope' },
-  { value: 'modelscope', label: 'ModelScope' },
-  { value: 'text2video', label: 'Text2Video-Zero' },
-];
+const MODEL_OPTIONS = getVideoModelOptions();
 
 interface VideoTabProps {
   state: VideoTabState;
