@@ -6,15 +6,12 @@
 
 import { useCallback } from 'react';
 import type { VideoTabState } from '@/store/useStudioStore';
-import {
-  PromptInput,
-  ModelSelector,
-  GenerationButton,
-  ResultPanel,
-  HistoryPanel,
-} from '@/components/studio/StudioControls';
+import { PromptInput, ModelSelector, GenerationButton } from '@/components/studio/StudioControls';
+import { ResultPanel } from '@/components/studio/ResultPanel';
+import { HistoryPanel } from '@/components/studio/HistoryPanel';
 import { VideoControls } from '@/components/studio/VideoControls';
 import { getVideoModelOptions } from '@/lib/model-options';
+import { saveGeneration } from '@/lib/storage';
 
 const MODEL_OPTIONS = getVideoModelOptions();
 
@@ -35,7 +32,14 @@ export function VideoTab({ state, update }: VideoTabProps): JSX.Element {
       resultUrl,
       history: [...state.history, newEntry],
     });
-  }, [state.prompt, state.history, update]);
+    saveGeneration({
+      model: state.model,
+      provider: state.model.split('-')[0] ?? 'unknown',
+      prompt: state.prompt,
+      params: { duration: state.duration, startFrame: state.startFrame, loop: state.loop },
+      resultUrl,
+    });
+  }, [state.prompt, state.model, state.duration, state.startFrame, state.loop, state.history, update]);
 
   return (
     <div className="video-tab">

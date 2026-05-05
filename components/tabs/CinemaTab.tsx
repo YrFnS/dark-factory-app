@@ -6,16 +6,13 @@
 
 import { useCallback } from 'react';
 import type { CinemaTabState } from '@/store/useStudioStore';
-import {
-  PromptInput,
-  ModelSelector,
-  GenerationButton,
-  ResultPanel,
-  HistoryPanel,
-} from '@/components/studio/StudioControls';
+import { PromptInput, ModelSelector, GenerationButton } from '@/components/studio/StudioControls';
+import { ResultPanel } from '@/components/studio/ResultPanel';
+import { HistoryPanel } from '@/components/studio/HistoryPanel';
 import { CinemaCameraControls } from '@/components/studio/CinemaCameraControls';
 import { translateCinemaSettings } from '@/components/studio/CinemaCameraControls';
 import { getImageModelOptions } from '@/lib/model-options';
+import { saveGeneration } from '@/lib/storage';
 
 const MODEL_OPTIONS = getImageModelOptions();
 
@@ -41,6 +38,13 @@ export function CinemaTab({ state, update }: CinemaTabProps): JSX.Element {
       timestamp: Date.now(),
     };
     update({ resultUrl, history: [...state.history, newEntry] });
+    saveGeneration({
+      model: state.model,
+      provider: state.model.split('-')[0] ?? 'unknown',
+      prompt: fullPrompt,
+      params: { lensType: state.lensType, focalLength: state.focalLength, aperture: state.aperture, cameraBody: state.cameraBody },
+      resultUrl,
+    });
   }, [state, update]);
 
   return (

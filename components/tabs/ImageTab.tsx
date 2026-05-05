@@ -6,17 +6,11 @@
 
 import { useCallback, useState } from 'react';
 import type { ImageTabState } from '@/store/useStudioStore';
-import {
-  PromptInput,
-  ModelSelector,
-  ReferencePicker,
-  StylePresets,
-  SmartControls,
-  GenerationButton,
-  ResultPanel,
-  HistoryPanel,
-} from '@/components/studio/StudioControls';
+import { PromptInput, ModelSelector, ReferencePicker, StylePresets, SmartControls, GenerationButton } from '@/components/studio/StudioControls';
+import { ResultPanel } from '@/components/studio/ResultPanel';
+import { HistoryPanel } from '@/components/studio/HistoryPanel';
 import { getImageModelOptions, getModelInputs } from '@/lib/model-options';
+import { saveGeneration } from '@/lib/storage';
 
 const MODEL_OPTIONS = getImageModelOptions();
 
@@ -42,7 +36,6 @@ export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
           prompt: state.prompt,
           seed: state.seed,
           referenceImage: state.referenceImage,
-          // Pass through model-specific inputs
           aspectRatio: state.aspectRatio,
           width: state.width,
           height: state.height,
@@ -53,17 +46,27 @@ export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
       });
       const data = await res.json();
       const resultUrl = data?.url ?? null;
+      const effectiveUrl = resultUrl ?? 'https://placehold.co/512x512/1a1a2e/d9ff00?text=Generation+Pending';
       const newEntry = {
         prompt: state.prompt,
-        resultUrl: resultUrl ?? 'https://placehold.co/512x512/1a1a2e/d9ff00?text=Generation+Pending',
+        resultUrl: effectiveUrl,
         timestamp: Date.now(),
       };
       update({
-        resultUrl: resultUrl ?? state.resultUrl,
+        resultUrl: effectiveUrl,
         history: [...state.history, newEntry],
       });
+      // Persist to localStorage
+      if (resultUrl) {
+        saveGeneration({
+          model: state.model,
+          provider: state.model.split('-')[0] ?? 'unknown',
+          prompt: state.prompt,
+          params: { aspectRatio: state.aspectRatio, width: state.width, height: state.height, quality: state.quality, seed: state.seed },
+          resultUrl,
+        });
+      }
     } catch {
-      // On error, keep previous result visible
       update({
         resultUrl: 'https://placehold.co/512x512/1a1a2e/ef4444?text=Error',
       });
@@ -72,7 +75,11 @@ export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
     }
   }, [state.prompt, state.model, state.seed, state.referenceImage,
       state.aspectRatio, state.width, state.height, state.quality,
-      state.steps, state.guidance, state.resultUrl, state.history, update]);
+      state.steps, state.guidance, state.history, update]);
+
+  const handleUseAsReference = useCallback((url: string) => {
+    update({ referenceImage: url });
+  }, [update]);
 
   return (
     <div className="image-tab">
@@ -123,7 +130,7 @@ export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
 
         {/* Right: Output */}
         <div className="output-col">
-          <ResultPanel resultUrl={state.resultUrl} type="image" />
+          <ResultPanel resultUrl={state.resultUrl} type="image" onUseAsReference={handleUseAsReference} />
           <div className="history-section">
             <h3 className="section-title">History</h3>
             <HistoryPanel
