@@ -1,30 +1,34 @@
 /**
- * Tab-specific model option arrays with provider colors.
- * Consumed by ImageTab, VideoTab, and CinemaTab.
+ * Model options helper — bridges lib/models.ts to UI components.
+ * Exports typed option arrays for dropdown components.
  */
 
-import { MODELS, PROVIDER_COLORS, ModelProvider, getModelInputs } from './models';
+import { MODELS, PROVIDER_COLORS } from '@/lib/models';
 
-export interface ModelOption {
+export { getModelInputs } from '@/lib/models';
+
+interface ModelOption {
   value: string;
   label: string;
-  providerColor?: string;
+  providerColor: string;
 }
-
-function modelToOption(model: (typeof MODELS)[number]): ModelOption {
-  return {
-    value: model.id,
-    label: model.name,
-    providerColor: PROVIDER_COLORS[model.provider as ModelProvider],
-  };
-}
-
-export { getModelInputs } from './models';
 
 export function getImageModelOptions(): ModelOption[] {
-  return MODELS.filter((m) => m.type === 'image').map(modelToOption);
+  return MODELS
+    .filter((m) => m.type === 'image')
+    .map((m) => ({
+      value: m.id,
+      label: m.name,
+      providerColor: PROVIDER_COLORS[m.provider],
+    }));
 }
 
 export function getVideoModelOptions(): ModelOption[] {
-  return MODELS.filter((m) => m.type === 'video').map(modelToOption);
+  return MODELS
+    .filter((m) => m.type === 'video')
+    .map((m) => ({
+      value: m.id,
+      label: m.name,
+      providerColor: PROVIDER_COLORS[m.provider],
+    }));
 }

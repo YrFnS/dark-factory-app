@@ -6,7 +6,8 @@
 
 import { useCallback, useState } from 'react';
 import type { ImageTabState } from '@/store/useStudioStore';
-import { PromptInput, ModelSelector, ReferencePicker, StylePresets, SmartControls, GenerationButton } from '@/components/studio/StudioControls';
+import { PromptInput, ReferencePicker, StylePresets, SmartControls, GenerationButton } from '@/components/studio/StudioControls';
+import { ModelSelector } from '@/components/studio/ModelSelector';
 import { ResultPanel } from '@/components/studio/ResultPanel';
 import { HistoryPanel } from '@/components/studio/HistoryPanel';
 import { getImageModelOptions, getModelInputs } from '@/lib/model-options';
