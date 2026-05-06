@@ -7,6 +7,18 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+type GenerateFn = () => void | Promise<void>;
+type SaveFn = () => void;
+
+// Per-tab shortcut callback refs (avoid re-renders on registration)
+type ShortcutFns = Record<TabId, { generate: GenerateFn | null; save: SaveFn | null }>;
+const DEFAULT_SHORTCUTS: ShortcutFns = {
+  image: { generate: null, save: null },
+  video: { generate: null, save: null },
+  cinema: { generate: null, save: null },
+  lipsync: { generate: null, save: null },
+};
+
 export type TabId = 'image' | 'video' | 'cinema' | 'lipsync';
 
 export interface ImageTabState {
@@ -133,6 +145,9 @@ export function useStudioStore(): {
   updateVideoTab: (updates: Partial<VideoTabState>) => void;
   updateCinemaTab: (updates: Partial<CinemaTabState>) => void;
   updateLipSyncTab: (updates: Partial<LipSyncTabState>) => void;
+  registerShortcut: (tab: TabId, type: 'generate' | 'save', fn: (() => void) | null) => void;
+  triggerActiveGenerate: () => void;
+  triggerActiveSave: () => void;
 } {
   const [state, setState] = useState<StudioState>(loadState);
   const isFirstRender = useRef(true);
@@ -166,5 +181,30 @@ export function useStudioStore(): {
     setState((prev) => ({ ...prev, lipsyncTab: { ...prev.lipsyncTab, ...updates } }));
   }, []);
 
-  return { state, setActiveTab, updateImageTab, updateVideoTab, updateCinemaTab, updateLipSyncTab };
+  // Mutable shortcut refs — not part of render state
+  const shortcutRefs = useRef<ShortcutFns>(DEFAULT_SHORTCUTS);
+
+  const registerShortcut = useCallback((tab: TabId, type: 'generate' | 'save', fn: GenerateFn | SaveFn | null) => {
+    shortcutRefs.current[tab][type] = fn ?? null;
+  }, []);
+
+  const triggerActiveGenerate = useCallback(() => {
+    shortcutRefs.current[state.activeTab]?.generate?.();
+  }, [state.activeTab]);
+
+  const triggerActiveSave = useCallback(() => {
+    shortcutRefs.current[state.activeTab]?.save?.();
+  }, [state.activeTab]);
+
+  return {
+    state,
+    setActiveTab,
+    updateImageTab,
+    updateVideoTab,
+    updateCinemaTab,
+    updateLipSyncTab,
+    registerShortcut,
+    triggerActiveGenerate,
+    triggerActiveSave,
+  };
 }

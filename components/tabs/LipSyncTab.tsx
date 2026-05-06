@@ -4,8 +4,9 @@
 
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import type { LipSyncTabState } from '@/store/useStudioStore';
+import { useStudioStore } from '@/store/useStudioStore';
 import { GenerationButton } from '@/components/studio/StudioControls';
 import { LipSyncControls } from '@/components/studio/LipSyncControls';
 import { LipSyncResult } from '@/components/studio/LipSyncResult';
@@ -16,6 +17,10 @@ interface LipSyncTabProps {
 }
 
 export function LipSyncTab({ state, update }: LipSyncTabProps): JSX.Element {
+  const store = useStudioStore();
+  const resultUrlRef = useRef(state.resultUrl);
+  resultUrlRef.current = state.resultUrl;
+
   const handleGenerate = useCallback(() => {
     if (!state.portraitImage || !state.audioFile) return;
     const resultUrl = 'https://placehold.co/512x512/1a1a2e/8b5cf6?text=LipSync+Result';
@@ -27,6 +32,27 @@ export function LipSyncTab({ state, update }: LipSyncTabProps): JSX.Element {
     };
     update({ resultUrl, history: [...state.history, newEntry] });
   }, [state, update]);
+
+  const handleDownload = useCallback(() => {
+    const resultUrl = resultUrlRef.current;
+    if (!resultUrl) return;
+    const a = document.createElement('a');
+    a.href = resultUrl;
+    a.download = `lipsync-result-${Date.now()}.mp4`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }, []);
+
+  // Register shortcuts for this tab
+  useEffect(() => {
+    store.registerShortcut('lipsync', 'generate', handleGenerate);
+    store.registerShortcut('lipsync', 'save', handleDownload);
+    return () => {
+      store.registerShortcut('lipsync', 'generate', null);
+      store.registerShortcut('lipsync', 'save', null);
+    };
+  }, [store, handleGenerate, handleDownload]);
 
   return (
     <div className="lipsync-tab">
