@@ -61,20 +61,21 @@ export function Header(): React.ReactElement {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 36px;
-          height: 36px;
+          width: 40px;
+          height: 40px;
           border-radius: 8px;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          color: #a1a1aa;
+          background: rgba(255, 255, 255, 0.12);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          color: #ffffff;
           cursor: pointer;
           transition: color 0.15s, background 0.15s, border-color 0.15s;
           text-decoration: none;
+          flex-shrink: 0;
         }
         .settings-btn:hover {
           color: #d9ff00;
-          background: rgba(217, 255, 0, 0.05);
-          border-color: rgba(217, 255, 0, 0.2);
+          background: rgba(217, 255, 0, 0.08);
+          border-color: rgba(217, 255, 0, 0.25);
         }
       `}</style>
     </header>
