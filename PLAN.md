@@ -150,7 +150,7 @@ Check off items as they complete. Cron job reads this to pick the next task.
 
 ### Phase 4 — Reference Picker + Upload History
 - [x] Phase 4: Build `lib/storage.ts` — getApiKeys/setApiKeys/getUploadHistory/saveUpload/getGenerationHistory/saveGeneration
-- [ ] Phase 4: Build `components/studio/ReferencePicker.tsx` — multi-image upload + history tab (currently missing)
+- [x] Phase 4: Build `components/studio/ReferencePicker.tsx` — multi-image upload + history tab (currently missing)
 
 ### Phase 5 — API Providers + Generation Route ✅ DONE
 - [x] Phase 5: Build `lib/providers/types.ts` — GenerateParams / GenerateResult interfaces

@@ -6,7 +6,7 @@ import type { TabId } from '@/store/useStudioStore';
 // Mock Tab icon
 const MockIcon = () => <svg data-testid="mock-icon" />;
 
-const makeTabs = (_active: TabId = 'image') => [
+const makeTabs = (_: TabId = 'image') => [
   { id: 'image' as TabId, label: 'Image', icon: <MockIcon /> },
   { id: 'video' as TabId, label: 'Video', icon: <MockIcon /> },
   { id: 'cinema' as TabId, label: 'Cinema', icon: <MockIcon /> },

@@ -69,18 +69,18 @@ export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
           <SmartControls
             seed={state.seed}
             onSeedChange={(seed) => update({ seed })}
-            modelInputs={modelInputs}
-            aspectRatio={state.aspectRatio}
+            {...(modelInputs !== undefined ? { modelInputs } : {})}
+            {...(state.aspectRatio !== undefined ? { aspectRatio: state.aspectRatio } : {})}
             onAspectRatioChange={(aspectRatio) => update({ aspectRatio })}
-            width={state.width}
+            {...(state.width !== undefined ? { width: state.width } : {})}
             onWidthChange={(width) => update({ width })}
-            height={state.height}
+            {...(state.height !== undefined ? { height: state.height } : {})}
             onHeightChange={(height) => update({ height })}
-            quality={state.quality}
+            {...(state.quality !== undefined ? { quality: state.quality } : {})}
             onQualityChange={(quality) => update({ quality })}
-            steps={state.steps}
+            {...(state.steps !== undefined ? { steps: state.steps } : {})}
             onStepsChange={(steps) => update({ steps })}
-            guidance={state.guidance}
+            {...(state.guidance !== undefined ? { guidance: state.guidance } : {})}
             onGuidanceChange={(guidance) => update({ guidance })}
           />
           <GenerationButton

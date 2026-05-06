@@ -74,7 +74,6 @@ function getWorkDir(phase: number, agentType: AgentType): string {
  * Returns the log file path for a given agent type and phase.
  * e.g. logs/plan.log
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getLogFilePath(agentType: AgentType, _phase: number): string {
   // Logs live at the repo root /logs/
   const logsDir = path.resolve(__dirname, '..', '..', '..', '..', 'logs');
@@ -201,7 +200,6 @@ async function spawnWithRetry(
  * Spawns the agent process once (no retry). Returns a promise that resolves
  * when the process exits.
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function spawnAgentOnce(
   agentType: AgentType,
   _phase: number,

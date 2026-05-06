@@ -164,7 +164,6 @@ export interface GenerateParams {
 export function useGenerate() {
   const [loading, setLoading] = useState(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const generate = useCallback(async (params: GenerateParams) => {
     if (loading) return;
 

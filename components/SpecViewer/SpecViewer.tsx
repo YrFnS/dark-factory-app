@@ -140,7 +140,7 @@ export default function SpecViewer({ phaseNumber }: SpecViewerProps): JSX.Elemen
                   ))}
                 </div>
               ) : (
-                Object.entries(previousPhaseContent).map(([phase, _content]) => {
+                Object.entries(previousPhaseContent).map(([phase]) => {
                   const phaseNum = parseInt(phase, 10);
                   return (
                     <button
