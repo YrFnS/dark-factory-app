@@ -176,7 +176,7 @@ Check off items as they complete. Cron job reads this to pick the next task.
 
 ### Phase 9 — Comparison Slider + Polish
 - [x] Phase 9: Build `ComparisonSlider.tsx` — before/after draggable divider
-- [ ] Phase 9: Build `Toast.tsx` — success/error feedback
+- [x] Phase 9: Build `Toast.tsx` — success/error feedback
 - [ ] Phase 9: Add keyboard shortcuts (Cmd+Enter generate, Cmd+S save, Esc close)
 - [ ] Phase 9: Responsive layout — collapse HistoryPanel to bottom drawer on mobile
 - [ ] Phase 9: Build `app/api/upload/route.ts`
