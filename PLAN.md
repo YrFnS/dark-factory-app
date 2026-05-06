@@ -145,6 +145,7 @@ Check off items as they complete. Cron job reads this to pick the next task.
 - [x] Phase 3: Build `components/studio/SmartControls.tsx` — dynamic controls from `model.inputs` (currently missing)
 - [x] Phase 3: Build `components/studio/StylePresets.tsx` — horizontal scroll preset cards (currently missing)
 - [x] Phase 3: Build `components/studio/GenerationButton.tsx` — generate CTA with loading state (currently missing)
+- [ ] Phase 3: Build `components/studio/PromptInput.tsx` — textarea + enhance toggle
 - [x] Phase 3: Make `StylePresets` append modifiers to prompt string on click
 - [x] Phase 3: Wire `GenerationButton` to call `/api/generate` with loading state
 
@@ -176,7 +177,7 @@ Check off items as they complete. Cron job reads this to pick the next task.
 
 ### Phase 9 — Comparison Slider + Polish
 - [x] Phase 9: Build `ComparisonSlider.tsx` — before/after draggable divider
-- [x] Phase 9: Build `Toast.tsx` — success/error feedback
+- [ ] Phase 9: Build `Toast.tsx` — success/error feedback
 - [x] Phase 9: Add keyboard shortcuts (Cmd+Enter generate, Cmd+S save, Esc close)
 - [x] Phase 9: Responsive layout — collapse HistoryPanel to bottom drawer on mobile
 - [x] Phase 9: Build `app/api/upload/route.ts`
@@ -355,15 +356,15 @@ Check off items as they complete. Cron job reads this to pick the next task.
 | --- | --- | --- | --- |
 | 1 | Project scaffold, dark theme, Button, Modal, Settings page | ✅ Done — scaffold, Button, Modal, Settings, Header, accent color all implemented | 8 total, done |
 | 2 | Model registry (`models.ts`), ModelSelector component | ✅ Done — `lib/models.ts` + `ModelSelector.tsx` with search + provider badges + ImageTab wired | 4 total, all done |
-| 3 | SmartControls, StylePresets, GenerationButton | ❌ NOT DONE — all 3 components MISSING from codebase | 4 total, all missing |
-| 4 | Storage helpers, ReferencePicker | ⚠️ PARTIAL — `lib/storage.ts` exists, but `ReferencePicker.tsx` is MISSING | 3 total, 1 missing |
+| 3 | SmartControls, StylePresets, GenerationButton, PromptInput | ⚠️ PARTIAL — SmartControls/StylePresets/GenerationButton done; PromptInput missing | 4 total, 3 done, 1 missing |
+| 4 | Storage helpers, ReferencePicker | ✅ Done — `lib/storage.ts` + `ReferencePicker.tsx` exist and wired | 3 total, all done |
 | 5 | Provider clients (OpenAI, Google, Replicate, Muapi), generate API route | ✅ Done — all 4 providers + dispatch route implemented | 6 total, done |
 | 6 | ResultPanel (download, use-as-ref), HistoryPanel (localStorage), saveGeneration wired | ✅ Done — download button, use-as-reference, localStorage persistence all implemented | 2 new files + 3 tab files updated |
 | 7 | Tab bar, ImageTab, VideoTab, CinemaTab, LipSyncTab, CinemaCameraControls | ✅ Done — studio shell fully wired | 7 total, done |
 | 8 | InpaintCanvas, MaskControls, CanvasToolbar, InpaintResultPanel, InpaintHistory | ✅ Done — InpaintResultPanel + InpaintHistory built; inpaint API wired (image/mask base64); ResultPanel gains onEditInCanvas prop | 6 total, 4 new |
-| 9 | ComparisonSlider, Toast, upload route, keyboard shortcuts, responsive | ❌ Not started | 5 total |
+| 9 | ComparisonSlider, Toast, upload route, keyboard shortcuts, responsive | ⚠️ PARTIAL — ComparisonSlider/upload/shortcuts/responsive done; Toast missing | 5 total, 4 done, 1 missing |
 
-**Overall: ~46 files. ~28 files remaining. Verified against actual codebase: Phases 1,5,6,7 fully done. Phases 2,3,4 partially done but plan overstated completion. Phases 8,9 not started.**
+**Overall: ~46 files. ~2 files remaining. Verified against actual codebase: Phases 1,5,6,7 fully done. Phases 2,3,4,8 partially done. Phase 9: 4/5 done, Toast missing.**
 
 ---
 
