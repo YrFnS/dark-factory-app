@@ -7,6 +7,7 @@ import { ImageTab } from '@/components/tabs/ImageTab';
 import { VideoTab } from '@/components/tabs/VideoTab';
 import { CinemaTab } from '@/components/tabs/CinemaTab';
 import { LipSyncTab } from '@/components/tabs/LipSyncTab';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 // SVG Icons for tabs
 const ImageIcon = () => (
@@ -69,6 +70,11 @@ interface StudioShellProps {
 
 export function StudioShell({ className }: StudioShellProps): JSX.Element {
   const store = useStudioStore();
+
+  useKeyboardShortcuts({
+    onGenerate: store.triggerActiveGenerate,
+    onSave: store.triggerActiveSave,
+  });
 
   return (
     <div className={`studio-shell ${className ?? ''}`}>
