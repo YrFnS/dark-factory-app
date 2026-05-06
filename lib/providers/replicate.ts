@@ -35,9 +35,14 @@ export async function generateWithReplicate(
   if (params.seed !== undefined) input.seed = params.seed;
   if (params.numOutputs && params.numOutputs > 1) input.num_outputs = params.numOutputs;
 
-  // Reference images as input image
+  // Reference images as input image (img2img / inpaint)
   if (params.referenceImages?.length) {
     input.input_image = params.referenceImages[0];
+  }
+  // Explicit image + mask takes precedence for inpaint
+  if (params.image) {
+    input.input_image = params.image;
+    if (params.mask) input.mask = params.mask;
   }
 
   // Create prediction

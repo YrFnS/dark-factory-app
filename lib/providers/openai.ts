@@ -28,6 +28,10 @@ export async function generateWithOpenAI(
     n: params.numOutputs ?? 1,
   };
 
+  // GPT-Image (gpt-image-1) supports image + mask for inpainting
+  if (params.image) body.image = params.image;
+  if (params.mask) body.mask = params.mask;
+
   // DALL-E 3 supports size, quality, style
   if (params.model === 'dall-e-3') {
     const size = params.width && params.height ? `${params.width}x${params.height}` : '1024x1024';

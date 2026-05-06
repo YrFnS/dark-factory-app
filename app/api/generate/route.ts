@@ -59,6 +59,8 @@ export async function POST(request: Request) {
       ...(body.seed !== undefined ? { seed: body.seed as number } : {}),
       ...(body.numOutputs !== undefined ? { numOutputs: body.numOutputs as number } : {}),
       ...(Array.isArray(body.referenceImages) ? { referenceImages: body.referenceImages as string[] } : {}),
+      ...(body.image ? { image: body.image as string } : {}),
+      ...(body.mask ? { mask: body.mask as string } : {}),
     };
 
     // Dispatch to correct provider

@@ -27,6 +27,10 @@ export interface GenerateParams {
   guidance?: number;
   /** Reference image URLs for img2img / inpaint */
   referenceImages?: string[];
+  /** Base64 input image for img2img / inpaint (data URL or raw base64) */
+  image?: string;
+  /** Base64 PNG mask for inpaint */
+  mask?: string;
   /** Seed for deterministic generation */
   seed?: number;
   /** Number of outputs (max 4 for most providers) */

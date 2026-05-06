@@ -12,9 +12,11 @@ interface ResultPanelProps {
   type?: 'image' | 'video';
   /** Called when the user wants to use the result as a reference image. */
   onUseAsReference?: (url: string) => void;
+  /** Called when the user wants to edit the result in the inpaint canvas. */
+  onEditInCanvas?: (url: string) => void;
 }
 
-export function ResultPanel({ resultUrl, type = 'image', onUseAsReference }: ResultPanelProps): JSX.Element {
+export function ResultPanel({ resultUrl, type = 'image', onUseAsReference, onEditInCanvas }: ResultPanelProps): JSX.Element {
   const handleDownload = useCallback(() => {
     if (!resultUrl) return;
     const a = document.createElement('a');
@@ -31,6 +33,11 @@ export function ResultPanel({ resultUrl, type = 'image', onUseAsReference }: Res
     if (!resultUrl || !onUseAsReference) return;
     onUseAsReference(resultUrl);
   }, [resultUrl, onUseAsReference]);
+
+  const handleEditInCanvas = useCallback(() => {
+    if (!resultUrl || !onEditInCanvas) return;
+    onEditInCanvas(resultUrl);
+  }, [resultUrl, onEditInCanvas]);
 
   if (!resultUrl) {
     return (
@@ -81,6 +88,16 @@ export function ResultPanel({ resultUrl, type = 'image', onUseAsReference }: Res
             Use as Reference
           </button>
         )}
+
+        {type === 'image' && onEditInCanvas && (
+          <button type="button" className="action-btn action-btn--canvas" onClick={handleEditInCanvas} title="Edit in Canvas">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
+            Edit in Canvas
+          </button>
+        )}
       </div>
 
       <style jsx>{`
@@ -114,6 +131,7 @@ export function ResultPanel({ resultUrl, type = 'image', onUseAsReference }: Res
         .action-btn:hover { border-color: #d9ff00; color: #d9ff00; }
         .action-btn--download:hover { border-color: #d9ff00; color: #d9ff00; }
         .action-btn--ref:hover { border-color: #d9ff00; color: #d9ff00; }
+        .action-btn--canvas:hover { border-color: #d9ff00; color: #d9ff00; }
       `}</style>
     </div>
   );
