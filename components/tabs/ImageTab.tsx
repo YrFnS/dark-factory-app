@@ -29,6 +29,18 @@ export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
   const resultUrlRef = useRef(state.resultUrl);
   resultUrlRef.current = state.resultUrl;
 
+  const handleGenerateSuccess = useCallback((resultUrl: string) => {
+    if (resultUrl && resultUrl.startsWith('http')) {
+      saveGeneration({
+        model: state.model,
+        provider: state.model.split('-')[0] ?? 'unknown',
+        prompt: state.prompt,
+        params: { aspectRatio: state.aspectRatio, width: state.width, height: state.height, quality: state.quality, seed: state.seed },
+        resultUrl,
+      });
+    }
+  }, [state.model, state.prompt, state.aspectRatio, state.width, state.height, state.quality, state.seed]);
+
   const handleGenerate = useCallback(async () => {
     if (!state.prompt || !state.model) return;
     try {
@@ -75,18 +87,6 @@ export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
   const handleUseAsReference = useCallback((url: string) => {
     update({ referenceImage: url });
   }, [update]);
-
-  const handleGenerateSuccess = useCallback((resultUrl: string) => {
-    if (resultUrl && resultUrl.startsWith('http')) {
-      saveGeneration({
-        model: state.model,
-        provider: state.model.split('-')[0] ?? 'unknown',
-        prompt: state.prompt,
-        params: { aspectRatio: state.aspectRatio, width: state.width, height: state.height, quality: state.quality, seed: state.seed },
-        resultUrl,
-      });
-    }
-  }, [state.model, state.prompt, state.aspectRatio, state.width, state.height, state.quality, state.seed]);
 
   return (
     <div className="image-tab">
