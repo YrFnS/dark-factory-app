@@ -4,9 +4,9 @@
 
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import type { ImageTabState } from '@/store/useStudioStore';
-import { PromptInput, ReferencePicker, StylePresets, SmartControls, GenerationButton } from '@/components/studio/StudioControls';
+import { PromptInput, ReferencePicker, StylePresets, SmartControls, GenerationButton, useGenerate } from '@/components/studio/StudioControls';
 import { ModelSelector } from '@/components/studio/ModelSelector';
 import { ResultPanel } from '@/components/studio/ResultPanel';
 import { HistoryPanel } from '@/components/studio/HistoryPanel';
@@ -21,66 +21,24 @@ interface ImageTabProps {
 }
 
 export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
-  const [loading, setLoading] = useState(false);
   const modelInputs = getModelInputs(state.model);
-
-  const handleGenerate = useCallback(async () => {
-    if (!state.prompt.trim()) return;
-    setLoading(true);
-    try {
-      const res = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'image',
-          model: state.model,
-          prompt: state.prompt,
-          seed: state.seed,
-          referenceImage: state.referenceImage,
-          aspectRatio: state.aspectRatio,
-          width: state.width,
-          height: state.height,
-          quality: state.quality,
-          steps: state.steps,
-          guidance: state.guidance,
-        }),
-      });
-      const data = await res.json();
-      const resultUrl = data?.url ?? null;
-      const effectiveUrl = resultUrl ?? 'https://placehold.co/512x512/1a1a2e/d9ff00?text=Generation+Pending';
-      const newEntry = {
-        prompt: state.prompt,
-        resultUrl: effectiveUrl,
-        timestamp: Date.now(),
-      };
-      update({
-        resultUrl: effectiveUrl,
-        history: [...state.history, newEntry],
-      });
-      // Persist to localStorage
-      if (resultUrl) {
-        saveGeneration({
-          model: state.model,
-          provider: state.model.split('-')[0] ?? 'unknown',
-          prompt: state.prompt,
-          params: { aspectRatio: state.aspectRatio, width: state.width, height: state.height, quality: state.quality, seed: state.seed },
-          resultUrl,
-        });
-      }
-    } catch {
-      update({
-        resultUrl: 'https://placehold.co/512x512/1a1a2e/ef4444?text=Error',
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [state.prompt, state.model, state.seed, state.referenceImage,
-      state.aspectRatio, state.width, state.height, state.quality,
-      state.steps, state.guidance, state.history, update]);
+  const { generate, loading } = useGenerate();
 
   const handleUseAsReference = useCallback((url: string) => {
     update({ referenceImage: url });
   }, [update]);
+
+  const handleGenerateSuccess = useCallback((resultUrl: string) => {
+    if (resultUrl && resultUrl.startsWith('http')) {
+      saveGeneration({
+        model: state.model,
+        provider: state.model.split('-')[0] ?? 'unknown',
+        prompt: state.prompt,
+        params: { aspectRatio: state.aspectRatio, width: state.width, height: state.height, quality: state.quality, seed: state.seed },
+        resultUrl,
+      });
+    }
+  }, [state.model, state.prompt, state.aspectRatio, state.width, state.height, state.quality, state.seed]);
 
   return (
     <div className="image-tab">
@@ -104,10 +62,9 @@ export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
             onChange={(v) => update({ referenceImage: Array.isArray(v) ? v[0] ?? null : v })}
           />
           <StylePresets
-            label="Style Preset"
             value={state.stylePreset}
             onChange={(stylePreset) => update({ stylePreset })}
-            onPromptAppend={(mod) => update({ prompt: state.prompt + mod })}
+            onModifierAppend={(modifier) => update({ prompt: state.prompt + modifier })}
           />
           <SmartControls
             seed={state.seed}
@@ -126,7 +83,22 @@ export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
             guidance={state.guidance}
             onGuidanceChange={(guidance) => update({ guidance })}
           />
-          <GenerationButton onClick={handleGenerate} loading={loading} label="Generate Image" />
+          <GenerationButton
+            onGenerate={generate}
+            loading={loading}
+            label="Generate Image"
+            onSuccess={(resultUrl) => handleGenerateSuccess(resultUrl)}
+            prompt={state.prompt}
+            model={state.model}
+            seed={state.seed}
+            referenceImage={state.referenceImage ?? undefined}
+            aspectRatio={state.aspectRatio}
+            width={state.width}
+            height={state.height}
+            quality={state.quality}
+            steps={state.steps}
+            guidance={state.guidance}
+          />
         </div>
 
         {/* Right: Output */}

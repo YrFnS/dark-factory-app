@@ -256,110 +256,12 @@ export function ReferencePicker({
 }
 
 // ===== StylePresets =====
-interface StylePresetsProps {
-  label?: string;
-  value: string;
-  onChange: (value: string) => void;
-  /** Called with modifier suffix when a preset button is clicked. */
-  onPromptAppend?: (modifier: string) => void;
-}
-
-const STYLE_OPTIONS = [
-  { value: 'none', label: 'None', modifier: '' },
-  { value: 'photorealistic', label: 'Photorealistic', modifier: ', photorealistic, high detail, 8k' },
-  { value: 'anime', label: 'Anime', modifier: ', anime style, vibrant colors' },
-  { value: 'digital-art', label: 'Digital Art', modifier: ', digital art, illustration' },
-  { value: 'concept-art', label: 'Concept Art', modifier: ', concept art, intricate details' },
-  { value: 'cinematic', label: 'Cinematic', modifier: ', cinematic lighting, film still' },
-  { value: 'noir', label: 'Film Noir', modifier: ', film noir, black and white, high contrast' },
-  { value: 'vintage', label: 'Vintage', modifier: ', vintage photography, faded colors' },
-];
-
-export function StylePresets({ label, value, onChange, onPromptAppend }: StylePresetsProps): JSX.Element {
-  const handleClick = (opt: typeof STYLE_OPTIONS[number]) => {
-    onChange(opt.value);
-    if (opt.modifier && onPromptAppend) {
-      onPromptAppend(opt.modifier);
-    }
-  };
-
-  return (
-    <div className="style-presets">
-      {label && <label className="field-label">{label}</label>}
-      <div className="preset-grid">
-        {STYLE_OPTIONS.map((opt) => (
-          <button
-            key={opt.value}
-            type="button"
-            className={`preset-btn ${value === opt.value ? 'preset-btn--active' : ''}`}
-            onClick={() => handleClick(opt)}
-          >
-            {opt.label}
-          </button>
-        ))}
-      </div>
-      <style jsx>{`
-        .style-presets { display: flex; flex-direction: column; gap: 6px; }
-        .field-label { font-size: 0.7rem; font-weight: 600; color: #6b6b78; text-transform: uppercase; letter-spacing: 0.08em; }
-        .preset-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-        .preset-btn {
-          padding: 5px 12px;
-          border-radius: 20px;
-          border: 1px solid #2a2a2e;
-          background: #161618;
-          color: #888;
-          font-size: 0.72rem;
-          cursor: pointer;
-          transition: all 0.15s;
-          font-family: inherit;
-        }
-        .preset-btn:hover { border-color: #d9ff00; color: #ccc; }
-        .preset-btn--active { border-color: #d9ff00; background: rgba(217,255,0,0.12); color: #d9ff00; }
-      `}</style>
-    </div>
-  );
-}
+export { StylePresets } from './StylePresets';
 
 // ===== SmartControls =====
 // Dynamic controls based on selected model's inputs — imported from separate file
 export { SmartControls } from './SmartControls';
 
 // ===== GenerationButton =====
-interface GenerationButtonProps {
-  onClick: () => void;
-  loading?: boolean;
-  label?: string;
-}
-
-export function GenerationButton({ onClick, loading = false, label = 'Generate' }: GenerationButtonProps): JSX.Element {
-  return (
-    <button
-      type="button"
-      className={`gen-btn ${loading ? 'gen-btn--loading' : ''}`}
-      onClick={onClick}
-      disabled={loading}
-    >
-      {loading ? 'Generating...' : label}
-      <style jsx>{`
-        .gen-btn {
-          width: 100%;
-          padding: 12px;
-          border-radius: 6px;
-          border: none;
-          background: #d9ff00;
-          color: black;
-          font-size: 0.85rem;
-          font-weight: 600;
-          cursor: pointer;
-          font-family: inherit;
-          transition: background 0.2s;
-          letter-spacing: 0.04em;
-        }
-        .gen-btn:hover:not(:disabled) { background: #b8d900; }
-        .gen-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        .gen-btn--loading { background: #a3bf00; }
-      `}</style>
-    </button>
-  );
-}
+export { GenerationButton, useGenerate } from './GenerationButton';
 
