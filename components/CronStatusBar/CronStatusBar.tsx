@@ -25,7 +25,7 @@ function formatTimestamp(timestamp: string | undefined | null): string {
  * CronStatusBar displays cron schedule information from pipeline state.
  * Shows next run time, last run time with outcome, and a trigger button.
  */
-export function CronStatusBar(): JSX.Element {
+export function CronStatusBar(): React.ReactElement {
   const { state } = usePipeline();
 
   const isRunInProgress = state?.phases

@@ -6,6 +6,6 @@
 
 import { StudioShell } from '@/components/studio/StudioShell';
 
-export default function StudioPage(): JSX.Element {
+export default function StudioPage(): React.ReactElement {
   return <StudioShell />;
 }

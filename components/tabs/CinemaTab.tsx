@@ -22,7 +22,7 @@ interface CinemaTabProps {
   update: (updates: Partial<CinemaTabState>) => void;
 }
 
-export function CinemaTab({ state, update }: CinemaTabProps): JSX.Element {
+export function CinemaTab({ state, update }: CinemaTabProps): React.ReactElement {
   const [historyOpen, setHistoryOpen] = useState(false);
   const store = useStudioStore();
   const resultUrlRef = useRef(state.resultUrl);

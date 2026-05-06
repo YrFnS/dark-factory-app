@@ -35,7 +35,7 @@ function getStatusLabel(status: PhaseStatus): string {
   }
 }
 
-export default function HomePage(): JSX.Element {
+export default function HomePage(): React.ReactElement {
   const { state, loading, error, dispatch } = usePipeline();
   const [selectedPhase, setSelectedPhase] = useState<number | null>(null);
 

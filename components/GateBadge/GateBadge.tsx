@@ -44,7 +44,7 @@ const STATUS_COLORS: Record<GateStatus, { text: string; icon: string; bg: string
  * Shows icon + label and handles 4 states: pending, running, pass, fail.
  * Hover shows tooltip with error count and last run time.
  */
-export function GateBadge({ gate, label }: GateBadgeProps): JSX.Element {
+export function GateBadge({ gate, label }: GateBadgeProps): React.ReactElement {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const status: GateStatus = gate.status;

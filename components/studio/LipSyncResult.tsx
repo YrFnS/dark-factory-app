@@ -8,7 +8,7 @@ interface LipSyncResultProps {
   resultUrl: string | null;
 }
 
-export function LipSyncResult({ resultUrl }: LipSyncResultProps): JSX.Element {
+export function LipSyncResult({ resultUrl }: LipSyncResultProps): React.ReactElement {
   if (!resultUrl) {
     return (
       <div className="result-placeholder">

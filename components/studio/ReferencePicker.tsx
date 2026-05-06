@@ -49,7 +49,7 @@ export function ReferencePicker({
   value,
   onChange,
   multiple = false,
-}: ReferencePickerProps): JSX.Element {
+}: ReferencePickerProps): React.ReactElement {
   const [activePickerTab, setActivePickerTab] = useState<'upload' | 'history'>('upload');
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

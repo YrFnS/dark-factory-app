@@ -15,7 +15,7 @@ interface LogStreamProps {
  * LogStream component that connects to the SSE endpoint and renders log entries
  * in real-time with filtering capabilities.
  */
-export default function LogStream({ className = '' }: LogStreamProps): JSX.Element {
+export default function LogStream({ className = '' }: LogStreamProps): React.ReactElement {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [isHovering, setIsHovering] = useState(false);
   const [agentFilter, setAgentFilter] = useState<AgentType | 'all'>('all');

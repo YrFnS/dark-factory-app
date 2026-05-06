@@ -36,7 +36,7 @@ export function SmartControls({
   quality,
   onQualityChange,
   modelInputs,
-}: SmartControlsProps): JSX.Element {
+}: SmartControlsProps): React.ReactElement {
   const handleSeedInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
     onSeedChange(v === '' ? null : parseInt(v, 10));

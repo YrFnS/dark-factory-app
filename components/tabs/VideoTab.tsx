@@ -21,7 +21,7 @@ interface VideoTabProps {
   update: (updates: Partial<VideoTabState>) => void;
 }
 
-export function VideoTab({ state, update }: VideoTabProps): JSX.Element {
+export function VideoTab({ state, update }: VideoTabProps): React.ReactElement {
   const [historyOpen, setHistoryOpen] = useState(false);
   const store = useStudioStore();
   const resultUrlRef = useRef(state.resultUrl);

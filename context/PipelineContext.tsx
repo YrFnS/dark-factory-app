@@ -150,7 +150,7 @@ interface PipelineProviderProps {
  * Pipeline Provider component
  * Fetches initial state from /api/state on mount
  */
-export function PipelineProvider({ children }: PipelineProviderProps): JSX.Element {
+export function PipelineProvider({ children }: PipelineProviderProps): React.ReactElement {
   const [contextState, dispatch] = useReducer(pipelineReducer, initialContextState);
 
   useEffect(() => {

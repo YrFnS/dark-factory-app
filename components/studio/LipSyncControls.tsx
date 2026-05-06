@@ -17,7 +17,7 @@ interface LipSyncControlsProps {
   onAudioChange: (file: string | null, name: string | null, duration: number | null) => void;
 }
 
-function AudioWaveform({ audioUrl }: { audioUrl: string | null }): JSX.Element {
+function AudioWaveform({ audioUrl }: { audioUrl: string | null }): React.ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export function LipSyncControls({
   audioName,
   audioDuration,
   onAudioChange,
-}: LipSyncControlsProps): JSX.Element {
+}: LipSyncControlsProps): React.ReactElement {
   const dropRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
 

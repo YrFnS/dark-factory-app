@@ -22,7 +22,7 @@ interface SpecViewerProps {
  * Uses react-markdown with remark-gfm for GitHub-flavored markdown.
  * Shows sticky header with phase name and a previous phases accordion.
  */
-export default function SpecViewer({ phaseNumber }: SpecViewerProps): JSX.Element {
+export default function SpecViewer({ phaseNumber }: SpecViewerProps): React.ReactElement {
   const [specContent, setSpecContent] = useState<string>('');
   const [previousPhaseContent, setPreviousPhaseContent] = useState<Record<number, string>>({});
   const [selectedPreviousPhase, setSelectedPreviousPhase] = useState<number | null>(null);

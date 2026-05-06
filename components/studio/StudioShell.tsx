@@ -68,7 +68,7 @@ interface StudioShellProps {
   className?: string;
 }
 
-export function StudioShell({ className }: StudioShellProps): JSX.Element {
+export function StudioShell({ className }: StudioShellProps): React.ReactElement {
   const store = useStudioStore();
 
   useKeyboardShortcuts({

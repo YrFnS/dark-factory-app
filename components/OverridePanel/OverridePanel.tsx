@@ -27,7 +27,7 @@ function ConfirmationModal({
   onConfirmInputChange,
   onCancel,
   onExecute,
-}: ConfirmationModalProps): JSX.Element | null {
+}: ConfirmationModalProps): React.ReactElement | null {
   if (!isOpen) return null;
 
   const actionLabels: Record<OverrideAction, string> = {
@@ -119,7 +119,7 @@ interface OverridePanelProps {
  * - Retry Phase: requires button hold (1s) or double-click confirmation
  * - Reset Pipeline: requires typing "CONFIRM" in modal
  */
-export default function OverridePanel({ className = '' }: OverridePanelProps): JSX.Element {
+export default function OverridePanel({ className = '' }: OverridePanelProps): React.ReactElement {
   const { state, dispatch } = usePipeline();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<OverrideAction | null>(null);

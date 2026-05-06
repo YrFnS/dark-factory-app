@@ -16,7 +16,7 @@ interface ResultPanelProps {
   onEditInCanvas?: (url: string) => void;
 }
 
-export function ResultPanel({ resultUrl, type = 'image', onUseAsReference, onEditInCanvas }: ResultPanelProps): JSX.Element {
+export function ResultPanel({ resultUrl, type = 'image', onUseAsReference, onEditInCanvas }: ResultPanelProps): React.ReactElement {
   const handleDownload = useCallback(() => {
     if (!resultUrl) return;
     const a = document.createElement('a');

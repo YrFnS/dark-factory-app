@@ -16,7 +16,7 @@ interface LipSyncTabProps {
   update: (updates: Partial<LipSyncTabState>) => void;
 }
 
-export function LipSyncTab({ state, update }: LipSyncTabProps): JSX.Element {
+export function LipSyncTab({ state, update }: LipSyncTabProps): React.ReactElement {
   const store = useStudioStore();
   const resultUrlRef = useRef(state.resultUrl);
   resultUrlRef.current = state.resultUrl;

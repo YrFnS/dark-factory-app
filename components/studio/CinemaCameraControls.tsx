@@ -33,7 +33,7 @@ export function CinemaCameraControls({
   onApertureChange,
   cameraBody,
   onCameraBodyChange,
-}: CinemaCameraControlsProps): JSX.Element {
+}: CinemaCameraControlsProps): React.ReactElement {
   const promptSuffix = translateCinemaSettings(lensType, focalLength, aperture, cameraBody);
   const viewportLabel = getCinemaViewportLabel(lensType, focalLength, aperture, cameraBody);
 

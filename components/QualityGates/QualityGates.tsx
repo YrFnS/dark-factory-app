@@ -16,7 +16,7 @@ interface QualityGatesProps {
  * Gate badges transition through: pending → running → pass/fail
  * with error counts and last-run timestamps updated in real-time.
  */
-export function QualityGates({ phaseNumber }: QualityGatesProps): JSX.Element {
+export function QualityGates({ phaseNumber }: QualityGatesProps): React.ReactElement {
   const { state } = usePipeline();
 
   if (!state) {
@@ -133,7 +133,7 @@ export function QualityGates({ phaseNumber }: QualityGatesProps): JSX.Element {
   );
 }
 
-function Timestamp({ label, gate }: { label: string; gate: GateResult }): JSX.Element {
+function Timestamp({ label, gate }: { label: string; gate: GateResult }): React.ReactElement {
   const lastRun = gate.lastRun ? new Date(gate.lastRun).toLocaleTimeString() : '—';
   return (
     <div className="timestamp">

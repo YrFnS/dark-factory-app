@@ -25,7 +25,7 @@ export function InpaintResultPanel({
   prompt,
   onUseAsReference,
   onDownload,
-}: InpaintResultPanelProps): JSX.Element {
+}: InpaintResultPanelProps): React.ReactElement {
   const handleDownload = useCallback(() => {
     if (!resultUrl) return;
     if (onDownload) {

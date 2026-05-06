@@ -21,7 +21,7 @@ interface ImageTabProps {
   update: (updates: Partial<ImageTabState>) => void;
 }
 
-export function ImageTab({ state, update }: ImageTabProps): JSX.Element {
+export function ImageTab({ state, update }: ImageTabProps): React.ReactElement {
   const [historyOpen, setHistoryOpen] = useState(false);
   const modelInputs = getModelInputs(state.model);
   const { generate, loading } = useGenerate();

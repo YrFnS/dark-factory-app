@@ -28,7 +28,7 @@ function createInitialActivities(phase: number): Record<string, AgentActivity> {
   ) as Record<string, AgentActivity>;
 }
 
-export function AgentActivityFeed({ phaseNumber }: AgentActivityFeedProps): JSX.Element {
+export function AgentActivityFeed({ phaseNumber }: AgentActivityFeedProps): React.ReactElement {
   const [activities, setActivities] = useState<Record<string, AgentActivity>>(
     createInitialActivities(phaseNumber)
   );

@@ -53,7 +53,7 @@ export function PhaseNode({
   timestamp,
   isCurrent,
   onSelect,
-}: PhaseNodeProps): JSX.Element {
+}: PhaseNodeProps): React.ReactElement {
   const phaseName = PHASE_NAMES[phaseNumber] ?? `Phase ${phaseNumber}`;
 
   return (

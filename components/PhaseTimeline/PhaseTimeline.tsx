@@ -24,7 +24,7 @@ function formatTimestamp(isoString?: string): string {
 export function PhaseTimeline({
   pipelineState,
   onPhaseSelect,
-}: PhaseTimelineProps): JSX.Element {
+}: PhaseTimelineProps): React.ReactElement {
   const { currentPhase, phases } = pipelineState;
   const phaseNumbers = [0, 1, 2, 3, 4, 5] as const;
 

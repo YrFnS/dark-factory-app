@@ -82,7 +82,7 @@ function formatTimestamp(isoString?: string): string {
   }
 }
 
-function StatusBadge({ status }: { status: PhaseStatus }): JSX.Element {
+function StatusBadge({ status }: { status: PhaseStatus }): React.ReactElement {
   const statusConfig: Record<PhaseStatus, { label: string; color: string; bgColor: string }> = {
     pending: { label: 'Pending', color: '#8b8b94', bgColor: 'rgba(139, 139, 148, 0.1)' },
     'in-progress': { label: 'In Progress', color: '#d9ff00', bgColor: 'rgba(217, 255, 0, 0.1)' },
@@ -110,7 +110,7 @@ interface PhaseDetailProps {
  * PhaseDetail shows information about the current or selected phase.
  * Displays phase info, goals, files, and acceptance criteria.
  */
-export function PhaseDetail({ phaseNumber }: PhaseDetailProps): JSX.Element {
+export function PhaseDetail({ phaseNumber }: PhaseDetailProps): React.ReactElement {
   const { state } = usePipeline();
 
   if (!state) {

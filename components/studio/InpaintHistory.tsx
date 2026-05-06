@@ -70,7 +70,7 @@ function formatTimestamp(ts: number): string {
   return new Date(ts).toLocaleDateString();
 }
 
-export function InpaintHistory({ onRestore }: InpaintHistoryProps): JSX.Element {
+export function InpaintHistory({ onRestore }: InpaintHistoryProps): React.ReactElement {
   const [records, setRecords] = useState<InpaintHistoryRecord[]>([]);
 
   const load = useCallback(() => {

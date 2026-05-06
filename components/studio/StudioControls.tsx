@@ -16,7 +16,7 @@ export function PromptInput({
   onChange,
   placeholder = 'Describe what you want to generate...',
   rows = 4,
-}: PromptInputProps): JSX.Element {
+}: PromptInputProps): React.ReactElement {
   return (
     <div className="prompt-input">
       {label && <label className="field-label">{label}</label>}

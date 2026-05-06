@@ -16,7 +16,7 @@ interface TabsProps {
   onTabChange: (tab: TabId) => void;
 }
 
-export function Tabs({ tabs, activeTab, onTabChange }: TabsProps): JSX.Element {
+export function Tabs({ tabs, activeTab, onTabChange }: TabsProps): React.ReactElement {
   const [indicatorStyle, setIndicatorStyle] = useState<React.CSSProperties>({});
   const tabRefs = useRef<Map<TabId, HTMLButtonElement | null>>(new Map());
 

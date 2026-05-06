@@ -16,7 +16,7 @@ interface HistoryPanelProps {
   onSelect?: (item: { prompt: string; resultUrl: string }) => void;
 }
 
-export function HistoryPanel({ history, onSelect }: HistoryPanelProps): JSX.Element {
+export function HistoryPanel({ history, onSelect }: HistoryPanelProps): React.ReactElement {
   if (history.length === 0) {
     return (
       <div className="history-empty">

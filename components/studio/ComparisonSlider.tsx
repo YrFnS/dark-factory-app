@@ -20,7 +20,7 @@ export function ComparisonSlider({
   afterUrl,
   beforeLabel,
   afterLabel,
-}: ComparisonSliderProps): JSX.Element {
+}: ComparisonSliderProps): React.ReactElement {
   // Position as a percentage (0–100), starting at center
   const [position, setPosition] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);

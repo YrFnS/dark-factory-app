@@ -23,7 +23,7 @@ export function ModelSelector({
   value,
   onChange,
   options,
-}: ModelSelectorProps): JSX.Element {
+}: ModelSelectorProps): React.ReactElement {
   const [search, setSearch] = useState('');
 
   const selected = options.find((o) => o.value === value);

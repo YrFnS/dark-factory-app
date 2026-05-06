@@ -20,7 +20,7 @@ export function VideoControls({
   onStartFrameChange,
   loop,
   onLoopChange,
-}: VideoControlsProps): JSX.Element {
+}: VideoControlsProps): React.ReactElement {
   const DURATIONS: Array<5 | 10 | 15 | 30> = [5, 10, 15, 30];
 
   return (
