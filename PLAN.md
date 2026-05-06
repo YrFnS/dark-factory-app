@@ -142,11 +142,11 @@ Check off items as they complete. Cron job reads this to pick the next task.
 - [x] Phase 2: Add provider badge colors (OpenAI=green, Google=blue, Replicate=purple, Muapi=yellow)
 
 ### Phase 3 — Smart Controls + Prompt Input
-- [ ] Phase 3: Build `components/studio/SmartControls.tsx` — dynamic controls from `model.inputs` (currently missing)
-- [ ] Phase 3: Build `components/studio/StylePresets.tsx` — horizontal scroll preset cards (currently missing)
-- [ ] Phase 3: Build `components/studio/GenerationButton.tsx` — generate CTA with loading state (currently missing)
-- [ ] Phase 3: Make `StylePresets` append modifiers to prompt string on click
-- [ ] Phase 3: Wire `GenerationButton` to call `/api/generate` with loading state
+- [x] Phase 3: Build `components/studio/SmartControls.tsx` — dynamic controls from `model.inputs` (currently missing)
+- [x] Phase 3: Build `components/studio/StylePresets.tsx` — horizontal scroll preset cards (currently missing)
+- [x] Phase 3: Build `components/studio/GenerationButton.tsx` — generate CTA with loading state (currently missing)
+- [x] Phase 3: Make `StylePresets` append modifiers to prompt string on click
+- [x] Phase 3: Wire `GenerationButton` to call `/api/generate` with loading state
 
 ### Phase 4 — Reference Picker + Upload History
 - [x] Phase 4: Build `lib/storage.ts` — getApiKeys/setApiKeys/getUploadHistory/saveUpload/getGenerationHistory/saveGeneration
