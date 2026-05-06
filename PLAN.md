@@ -177,7 +177,7 @@ Check off items as they complete. Cron job reads this to pick the next task.
 
 ### Phase 9 — Comparison Slider + Polish
 - [x] Phase 9: Build `ComparisonSlider.tsx` — before/after draggable divider
-- [ ] Phase 9: Build `Toast.tsx` — success/error feedback
+- [x] Phase 9: Build `Toast.tsx` — success/error feedback
 - [x] Phase 9: Add keyboard shortcuts (Cmd+Enter generate, Cmd+S save, Esc close)
 - [x] Phase 9: Responsive layout — collapse HistoryPanel to bottom drawer on mobile
 - [x] Phase 9: Build `app/api/upload/route.ts`
@@ -362,9 +362,9 @@ Check off items as they complete. Cron job reads this to pick the next task.
 | 6 | ResultPanel (download, use-as-ref), HistoryPanel (localStorage), saveGeneration wired | ✅ Done — download button, use-as-reference, localStorage persistence all implemented | 2 new files + 3 tab files updated |
 | 7 | Tab bar, ImageTab, VideoTab, CinemaTab, LipSyncTab, CinemaCameraControls | ✅ Done — studio shell fully wired | 7 total, done |
 | 8 | InpaintCanvas, MaskControls, CanvasToolbar, InpaintResultPanel, InpaintHistory | ✅ Done — InpaintResultPanel + InpaintHistory built; inpaint API wired (image/mask base64); ResultPanel gains onEditInCanvas prop | 6 total, 4 new |
-| 9 | ComparisonSlider, Toast, upload route, keyboard shortcuts, responsive | ⚠️ PARTIAL — ComparisonSlider/upload/shortcuts/responsive done; Toast missing | 5 total, 4 done, 1 missing |
+| 9 | ComparisonSlider, Toast, upload route, keyboard shortcuts, responsive | ✅ Done — ComparisonSlider, Toast, upload route, keyboard shortcuts, responsive all implemented | 5 total, all done |
 
-**Overall: ~46 files. ~2 files remaining. Verified against actual codebase: Phases 1,5,6,7 fully done. Phases 2,3,4,8 partially done. Phase 9: 4/5 done, Toast missing.**
+**Overall: ~46 files. ~1 file remaining. Verified against actual codebase: Phases 1,5,6,7,8,9 fully done. Phase 3: PromptInput.tsx missing. Phase 4 ReferencePicker done.**
 
 ---
 
