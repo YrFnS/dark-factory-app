@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { getCustomModels, saveCustomModels, type ModelProvider, type ModelType, type CustomModel } from "@/lib/models";
 
 const STORAGE_KEY = "uas_api_keys";
 
@@ -74,11 +75,21 @@ export default function SettingsPage() {
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [saved, setSaved] = useState(false);
   const [testStatus, setTestStatus] = useState<TestStatus>({});
+  const [customModels, setCustomModels] = useState<CustomModel[]>([]);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newModel, setNewModel] = useState<{ id: string; name: string; provider: ModelProvider; type: ModelType }>({
+    id: "",
+    name: "",
+    provider: "openai",
+    type: "image",
+  });
+  const [addSuccess, setAddSuccess] = useState(false);
 
   useEffect(() => {
     const stored = loadKeys();
     setKeys(stored);
     setDrafts(stored);
+    setCustomModels(getCustomModels());
   }, []);
 
   const handleSave = useCallback(() => {
@@ -117,6 +128,26 @@ export default function SettingsPage() {
     setDrafts((prev) => ({ ...prev, [providerId]: value }));
     setTestStatus((s) => ({ ...s, [providerId]: "idle" }));
   };
+
+  const handleAddCustomModel = useCallback(() => {
+    if (!newModel.id.trim() || !newModel.name.trim()) return;
+    const updated = [...customModels, { ...newModel, id: newModel.id.trim(), name: newModel.name.trim() }];
+    saveCustomModels(updated);
+    setCustomModels(updated);
+    setNewModel({ id: "", name: "", provider: "openai", type: "image" });
+    setShowAddForm(false);
+    setAddSuccess(true);
+    setTimeout(() => setAddSuccess(false), 2000);
+  }, [newModel, customModels]);
+
+  const handleDeleteCustomModel = useCallback(
+    (id: string) => {
+      const updated = customModels.filter((m) => m.id !== id);
+      saveCustomModels(updated);
+      setCustomModels(updated);
+    },
+    [customModels]
+  );
 
   const hasChanges = JSON.stringify(keys) !== JSON.stringify(drafts);
 
@@ -268,6 +299,128 @@ export default function SettingsPage() {
           </div>
         </div>
       )}
+
+      {/* Custom Models Section */}
+      <div style={styles.sectionHeader}>
+        <h2 style={styles.sectionTitle}>Custom Models</h2>
+        <p style={styles.sectionSubtitle}>Add your own model entries to appear in the generator selector.</p>
+      </div>
+
+      <div style={styles.cards}>
+        {customModels.length === 0 && !showAddForm && (
+          <div style={{ ...styles.card, textAlign: "center", color: "#52525b", fontSize: "0.875rem", padding: "2rem" }}>
+            No custom models yet. Add one below.
+          </div>
+        )}
+
+        {customModels.map((model) => (
+          <div key={model.id} style={styles.card}>
+            <div style={styles.cardHeader}>
+              <div>
+                <div style={styles.providerName}>{model.name}</div>
+                <div style={styles.providerSub}>{model.id} · {model.provider} · {model.type}</div>
+              </div>
+              <button
+                onClick={() => handleDeleteCustomModel(model.id)}
+                style={styles.deleteBtn}
+                title="Delete custom model"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6l-1 14H6L5 6" />
+                  <path d="M10 11v6M14 11v6" />
+                  <path d="M9 6V4h6v2" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        ))}
+
+        {showAddForm ? (
+          <div style={styles.card}>
+            <div style={styles.cardHeader}>
+              <div style={styles.providerName}>Add Custom Model</div>
+            </div>
+            <div style={styles.formGrid}>
+              <div style={styles.formField}>
+                <label style={styles.label}>Model ID</label>
+                <input
+                  type="text"
+                  value={newModel.id}
+                  onChange={(e) => setNewModel((prev) => ({ ...prev, id: e.target.value }))}
+                  placeholder="e.g. my-model-v1"
+                  style={styles.input}
+                />
+              </div>
+              <div style={styles.formField}>
+                <label style={styles.label}>Display Name</label>
+                <input
+                  type="text"
+                  value={newModel.name}
+                  onChange={(e) => setNewModel((prev) => ({ ...prev, name: e.target.value }))}
+                  placeholder="e.g. My Model"
+                  style={styles.input}
+                />
+              </div>
+              <div style={styles.formField}>
+                <label style={styles.label}>Provider</label>
+                <select
+                  value={newModel.provider}
+                  onChange={(e) => setNewModel((prev) => ({ ...prev, provider: e.target.value as ModelProvider }))}
+                  style={styles.select}
+                >
+                  <option value="openai">OpenAI</option>
+                  <option value="google">Google</option>
+                  <option value="replicate">Replicate</option>
+                  <option value="muapi">Muapi</option>
+                </select>
+              </div>
+              <div style={styles.formField}>
+                <label style={styles.label}>Type</label>
+                <select
+                  value={newModel.type}
+                  onChange={(e) => setNewModel((prev) => ({ ...prev, type: e.target.value as ModelType }))}
+                  style={styles.select}
+                >
+                  <option value="image">Image</option>
+                  <option value="video">Video</option>
+                  <option value="audio">Audio</option>
+                  <option value="chat">Chat</option>
+                </select>
+              </div>
+            </div>
+            <div style={styles.formActions}>
+              <button onClick={() => setShowAddForm(false)} style={styles.cancelBtn}>
+                Cancel
+              </button>
+              <button
+                onClick={handleAddCustomModel}
+                style={{ ...styles.saveBtn, ...(!newModel.id.trim() || !newModel.name.trim() ? styles.saveBtnDisabled : {}) }}
+                disabled={!newModel.id.trim() || !newModel.name.trim()}
+              >
+                {addSuccess ? (
+                  <>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    Added!
+                  </>
+                ) : (
+                  "Add Model"
+                )}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button onClick={() => setShowAddForm(true)} style={styles.addModelBtn}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            Add Custom Model
+          </button>
+        )}
+      </div>
     </div>
   );
 }
@@ -486,5 +639,80 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: "0.875rem",
     fontWeight: 600,
     cursor: "pointer",
+  },
+  sectionHeader: {
+    marginTop: "2rem",
+    marginBottom: "1rem",
+  },
+  sectionTitle: {
+    fontSize: "1.25rem",
+    fontWeight: 700,
+    color: "#ffffff",
+    margin: "0 0 0.25rem 0",
+  },
+  sectionSubtitle: {
+    fontSize: "0.8125rem",
+    color: "#71717a",
+    margin: 0,
+  },
+  deleteBtn: {
+    background: "transparent",
+    border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: "0.375rem",
+    padding: "0.375rem",
+    cursor: "pointer",
+    color: "#71717a",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "color 0.15s, border-color 0.15s",
+  },
+  formGrid: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "0.75rem",
+    marginBottom: "1rem",
+  },
+  formField: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.25rem",
+  },
+  label: {
+    fontSize: "0.75rem",
+    fontWeight: 500,
+    color: "#a1a1aa",
+  },
+  select: {
+    background: "rgba(0,0,0,0.4)",
+    border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: "0.5rem",
+    padding: "0.5rem 0.75rem",
+    fontSize: "0.875rem",
+    color: "#ffffff",
+    fontFamily: "var(--font-sans, 'Inter', sans-serif)",
+    outline: "none",
+    cursor: "pointer",
+  },
+  formActions: {
+    display: "flex",
+    gap: "0.75rem",
+    justifyContent: "flex-end",
+  },
+  addModelBtn: {
+    background: "rgba(255,255,255,0.03)",
+    border: "1px dashed rgba(255,255,255,0.15)",
+    borderRadius: "0.75rem",
+    padding: "0.875rem",
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    color: "#a1a1aa",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "0.5rem",
+    transition: "color 0.15s, border-color 0.15s",
+    width: "100%",
   },
 };

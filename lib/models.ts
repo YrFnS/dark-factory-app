@@ -185,3 +185,34 @@ export function getModelById(id: string): Model | undefined {
 export function getModelInputs(modelId: string): ModelInputs | undefined {
   return getModelById(modelId)?.inputs;
 }
+
+/** Custom model entry — user-defined, stored in localStorage */
+export interface CustomModel {
+  id: string;
+  name: string;
+  provider: ModelProvider;
+  type: ModelType;
+  inputs?: ModelInputs;
+}
+
+const CUSTOM_MODELS_KEY = 'df_custom_models';
+
+export function getCustomModels(): CustomModel[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(CUSTOM_MODELS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveCustomModels(models: CustomModel[]): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(CUSTOM_MODELS_KEY, JSON.stringify(models));
+}
+
+/** Merge built-in MODELS + custom models from localStorage */
+export function getAllModels(): (Model | CustomModel)[] {
+  return [...MODELS, ...getCustomModels()];
+}

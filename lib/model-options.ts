@@ -3,7 +3,7 @@
  * Exports typed option arrays for dropdown components.
  */
 
-import { MODELS, PROVIDER_COLORS } from '@/lib/models';
+import { MODELS, PROVIDER_COLORS, getCustomModels } from '@/lib/models';
 
 export { getModelInputs } from '@/lib/models';
 
@@ -14,21 +14,21 @@ interface ModelOption {
 }
 
 export function getImageModelOptions(): ModelOption[] {
-  return MODELS
-    .filter((m) => m.type === 'image')
-    .map((m) => ({
-      value: m.id,
-      label: m.name,
-      providerColor: PROVIDER_COLORS[m.provider],
-    }));
+  const custom = getCustomModels().filter((m) => m.type === 'image');
+  const builtIn = MODELS.filter((m) => m.type === 'image');
+  return [...builtIn, ...custom].map((m) => ({
+    value: m.id,
+    label: m.name,
+    providerColor: PROVIDER_COLORS[m.provider] ?? '#888888',
+  }));
 }
 
 export function getVideoModelOptions(): ModelOption[] {
-  return MODELS
-    .filter((m) => m.type === 'video')
-    .map((m) => ({
-      value: m.id,
-      label: m.name,
-      providerColor: PROVIDER_COLORS[m.provider],
-    }));
+  const custom = getCustomModels().filter((m) => m.type === 'video');
+  const builtIn = MODELS.filter((m) => m.type === 'video');
+  return [...builtIn, ...custom].map((m) => ({
+    value: m.id,
+    label: m.name,
+    providerColor: PROVIDER_COLORS[m.provider] ?? '#888888',
+  }));
 }
