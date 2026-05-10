@@ -14,7 +14,7 @@ export async function generateWithGoogle(
 
   // Determine endpoint based on model
   const modelId = params.model; // e.g. 'imagen-3'
-  const project = 'demo-project'; // User would configure this
+  const project = params.projectId ?? process.env.GOOGLE_CLOUD_PROJECT ?? 'demo-project';
 
   // Imagen API endpoint
   const endpoint = `${VERTEX_API_BASE}/projects/${project}/locations/us-central1/publishers/google/models/${modelId}:predict`;

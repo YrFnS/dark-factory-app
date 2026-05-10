@@ -35,6 +35,8 @@ export interface GenerateParams {
   seed?: number;
   /** Number of outputs (max 4 for most providers) */
   numOutputs?: number;
+  /** Google Cloud project ID (for Vertex AI) */
+  projectId?: string;
 }
 
 export interface GenerateResult {

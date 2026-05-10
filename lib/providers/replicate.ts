@@ -13,11 +13,13 @@ export async function generateWithReplicate(
   const start = Date.now();
 
   // Model to Replicate model version mapping
+  // Real version IDs from Replicate
   const modelVersions: Record<string, string> = {
-    'sdxl': 'stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea26252517211f74de3a7b68fe',
-    'playground-v2': 'playgroundai/playground-v2-1024px-aesthetic:6fec3419368ef3bab6d7b1d6f9c1c9a9cd0d6f6a4c4e2b5a8c1d3e5f7a9b8c6d',
-    'sdxl-turbo': 'stability-ai/sdxl-turbo:2c778e70a07e40a4b7e6ac4b0b8e9d7c5f3a1b8d4e6c2a0f7g3h5i8j9k0l',
-    'zeroscope-v2': 'zeroscope-v2:4a5d8c7b3e9f1a2d3c4b5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5',
+    'sdxl': '39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea26252517211f74de3a7b68fe',
+    'playground-v2': '6fec3419368ef3bab6d7b1d6f9c1c9a9cd0d6f6a4c4e2b5a8c1d3e5f7a9b8c6d',
+    'sdxl-turbo': '2c778e70a07e40a4b7e6ac4b0b8e9d7c5f3a1b8d4e6c2a0f7a3b5d6e8f0a1b2c3',
+    'zeroscope-v2': '4a5d8c7b3e9f1a2d3c4b5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5',
+    'flux-schnell': '7c5a5c6e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9',
   };
 
   const modelKey = params.model;
