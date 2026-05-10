@@ -88,9 +88,20 @@ export const MODELS: Model[] = [
     provider: 'google',
     type: 'image',
     inputs: {
-      aspectRatios: ['1:1', '4:3', '3:2', '16:9', '9:16'],
+      aspectRatios: ['1:1', '4:3', '3:4', '16:9', '9:16'],
       style: ['vivid', 'natural'],
-      maxImages: 1,
+      maxImages: 4,
+    },
+  },
+  {
+    id: 'imagen-4',
+    name: 'Imagen 4',
+    provider: 'google',
+    type: 'image',
+    inputs: {
+      aspectRatios: ['1:1', '4:3', '3:4', '16:9', '9:16'],
+      style: ['vivid', 'natural'],
+      maxImages: 4,
     },
   },
 

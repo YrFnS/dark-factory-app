@@ -1,47 +1,82 @@
 /**
- * lib/providers/google.ts — Google Vertex AI Imagen Generation.
- * Uses Google Cloud Vertex AI API — requires service account or API key.
+ * lib/providers/google.ts — Google AiStudio/Gemini Imagen Generation.
+ * Uses Google AiStudio API (generativelanguage.googleapis.com) with API key as query param.
  */
 import type { GenerateParams, GenerateResult } from './types';
 
-const VERTEX_API_BASE = 'https://vertexai.googleapis.com/v1';
+const AISTUDIO_API_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 
+/**
+ * Generate images using Google's Imagen models via AiStudio API.
+ *
+ * Endpoint: POST https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:predict?key={API_KEY}
+ * Body: { "instances": [{ "prompt": "..." }], "parameters": { ... } }
+ * Response: { "predictions": [{ "bytesBase64Encoded": "...", "mimeType": "image/png" }] }
+ */
 export async function generateWithGoogle(
   params: GenerateParams,
   apiKey: string
 ): Promise<GenerateResult> {
   const start = Date.now();
 
-  // Determine endpoint based on model
-  const modelId = params.model; // e.g. 'imagen-3'
-  const project = params.projectId ?? process.env.GOOGLE_CLOUD_PROJECT ?? 'demo-project';
+  // Map short model id to full AiStudio model name
+  const modelId = resolveModelId(params.model);
 
-  // Imagen API endpoint
-  const endpoint = `${VERTEX_API_BASE}/projects/${project}/locations/us-central1/publishers/google/models/${modelId}:predict`;
+  const endpoint = `${AISTUDIO_API_BASE}/models/${modelId}:predict`;
 
-  // Build image prompt
-  const prompt = {
-    prompt: params.prompt,
-    ...(params.aspectRatio ? { aspectRatio: params.aspectRatio } : {}),
-    ...(params.width ? { width: params.width } : {}),
-    ...(params.height ? { height: params.height } : {}),
-    ...(params.numOutputs ? { sampleCount: params.numOutputs } : {}),
-    ...(params.style ? { style: params.style } : {}),
+  // Build parameters based on what's provided
+  const generationConfig: Record<string, unknown> = {};
+
+  if (params.aspectRatio) {
+    generationConfig.aspectRatio = params.aspectRatio;
+  }
+  if (params.width && params.height) {
+    // Some models support explicit dimensions; pass as imageSize if aspectRatio not used
+    generationConfig.imageSize = { width: params.width, height: params.height };
+  }
+  if (params.numOutputs) {
+    generationConfig.sampleCount = params.numOutputs;
+  }
+  if (params.style) {
+    generationConfig.style = params.style;
+  }
+
+  const body = {
+    instances: [{ prompt: params.prompt }],
+    parameters: generationConfig,
   };
 
-  const res = await fetch(`${endpoint}?key=${apiKey}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ instances: [{ prompt: params.prompt }], parameters: prompt }),
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
+  let res: Response;
+  try {
+    res = await fetch(`${endpoint}?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  } catch (err) {
     return {
       urls: [],
       provider: 'google',
       model: params.model,
-      error: err.error?.message ?? `Google API error ${res.status}`,
+      error: `Network error: ${err instanceof Error ? err.message : String(err)}`,
+    };
+  }
+
+  if (!res.ok) {
+    let errMsg = `Google API error ${res.status}`;
+    try {
+      const errData = await res.json() as { error?: { message?: string } };
+      if (errData.error?.message) {
+        errMsg = errData.error.message;
+      }
+    } catch {
+      // ignore parse error
+    }
+    return {
+      urls: [],
+      provider: 'google',
+      model: params.model,
+      error: errMsg,
     };
   }
 
@@ -68,4 +103,15 @@ export async function generateWithGoogle(
     model: params.model,
     processingTimeMs: Date.now() - start,
   };
+}
+
+/**
+ * Resolve short model id (e.g. 'imagen-3', 'imagen-4') to full AiStudio model name.
+ */
+function resolveModelId(shortId: string): string {
+  const modelMap: Record<string, string> = {
+    'imagen-4': 'imagen-4.0-generate-001',
+    'imagen-3': 'imagen-3.0-generate-001',
+  };
+  return modelMap[shortId] ?? shortId;
 }
