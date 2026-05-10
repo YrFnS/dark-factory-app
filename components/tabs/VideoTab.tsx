@@ -11,10 +11,7 @@ import { PromptInput, ModelSelector, GenerationButton } from '@/components/studi
 import { ResultPanel } from '@/components/studio/ResultPanel';
 import { HistoryPanel } from '@/components/studio/HistoryPanel';
 import { VideoControls } from '@/components/studio/VideoControls';
-import { getVideoModelOptions } from '@/lib/model-options';
 import { saveGeneration } from '@/lib/storage';
-
-const MODEL_OPTIONS = getVideoModelOptions();
 
 interface VideoTabProps {
   state: VideoTabState;
@@ -23,11 +20,17 @@ interface VideoTabProps {
 
 export function VideoTab({ state, update }: VideoTabProps): React.ReactElement {
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [modelOptions, setModelOptions] = useState<{ value: string; label: string; providerColor: string }[]>([]);
   const store = useStudioStore();
   const resultUrlRef = useRef(state.resultUrl);
   resultUrlRef.current = state.resultUrl;
 
-  const handleGenerate = useCallback(() => {
+  // Load video model options from IndexedDB
+  useEffect(() => {
+    import('@/lib/model-options').then(m => m.getVideoModelOptions()).then(setModelOptions);
+  }, []);
+
+  const handleGenerate = useCallback(async () => {
     const resultUrl = 'https://placehold.co/512x512/1a1a2e/ef4444?text=Video+Result';
     const newEntry = {
       prompt: state.prompt,
@@ -38,7 +41,7 @@ export function VideoTab({ state, update }: VideoTabProps): React.ReactElement {
       resultUrl,
       history: [...state.history, newEntry],
     });
-    saveGeneration({
+    await saveGeneration({
       model: state.model,
       provider: state.model.split('-')[0] ?? 'unknown',
       prompt: state.prompt,
@@ -82,7 +85,7 @@ export function VideoTab({ state, update }: VideoTabProps): React.ReactElement {
             label="Model"
             value={state.model}
             onChange={(model) => update({ model })}
-            options={MODEL_OPTIONS}
+            options={modelOptions}
           />
           <VideoControls
             duration={state.duration}

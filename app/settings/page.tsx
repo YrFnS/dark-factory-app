@@ -5,15 +5,14 @@ import { Modal } from "@/components/ui/Modal";
 import {
   getCustomModels,
   saveCustomModels,
-  getAllModels,
   type ModelProvider,
   type ModelType,
   type CustomModel,
   type ModelInputs,
   PROVIDER_COLORS,
 } from "@/lib/models";
-
-const STORAGE_KEY = "uas_api_keys";
+import { getApiKeys, setApiKey } from "@/lib/storage";
+const saveKeys = (keys: ApiKeys) => Promise.all(Object.entries(keys).map(([k, v]) => setApiKey(k, v)));
 
 interface ApiKeys {
   openai?: string;
@@ -21,6 +20,8 @@ interface ApiKeys {
   replicate?: string;
   muapi?: string;
 }
+
+type TestStatus = Record<string, "idle" | "valid" | "invalid">;
 
 const PROVIDERS = [
   {
@@ -65,22 +66,6 @@ function maskKey(key: string): string {
   return key.slice(0, 4) + "••••••••••••••••";
 }
 
-function loadKeys(): ApiKeys {
-  if (typeof window === "undefined") return {};
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
-}
-
-function saveKeys(keys: ApiKeys): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(keys));
-}
-
-type TestStatus = Record<string, "idle" | "valid" | "invalid">;
-
 const EMPTY_INPUTS: Partial<ModelInputs> = {
   aspectRatios: [],
   quality: [],
@@ -114,10 +99,16 @@ export default function SettingsPage() {
   });
 
   useEffect(() => {
-    const stored = loadKeys();
-    setKeys(stored);
-    setDrafts(stored);
-    setCustomModels(getCustomModels());
+    async function load() {
+      const [stored, models] = await Promise.all([
+        getApiKeys(),
+        getCustomModels(),
+      ]);
+      setKeys(stored);
+      setDrafts(stored);
+      setCustomModels(models);
+    }
+    load();
   }, []);
 
   const handleSave = useCallback(() => {
@@ -187,7 +178,7 @@ export default function SettingsPage() {
   );
 
   const hasChanges = JSON.stringify(keys) !== JSON.stringify(drafts);
-  const allModels = getAllModels();
+  const allModels = customModels;
 
   return (
     <div style={styles.root}>

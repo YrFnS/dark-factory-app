@@ -82,7 +82,7 @@ const DEFAULT_STATE: StudioState = {
   activeTab: 'image',
   imageTab: {
     prompt: '',
-    model: 'sdxl',
+    model: '',
     referenceImage: null,
     stylePreset: 'none',
     seed: null,
@@ -91,7 +91,7 @@ const DEFAULT_STATE: StudioState = {
   },
   videoTab: {
     prompt: '',
-    model: 'zeroscope-v2',
+    model: '',
     duration: 5,
     startFrame: 0,
     loop: false,
@@ -100,7 +100,7 @@ const DEFAULT_STATE: StudioState = {
   },
   cinemaTab: {
     prompt: '',
-    model: 'sdxl',
+    model: '',
     lensType: 'Cinema Prime',
     focalLength: 50,
     aperture: 2.8,

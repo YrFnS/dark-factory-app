@@ -12,10 +12,7 @@ import { ResultPanel } from '@/components/studio/ResultPanel';
 import { HistoryPanel } from '@/components/studio/HistoryPanel';
 import { CinemaCameraControls } from '@/components/studio/CinemaCameraControls';
 import { translateCinemaSettings } from '@/components/studio/CinemaCameraControls';
-import { getImageModelOptions } from '@/lib/model-options';
 import { saveGeneration } from '@/lib/storage';
-
-const MODEL_OPTIONS = getImageModelOptions();
 
 interface CinemaTabProps {
   state: CinemaTabState;
@@ -24,11 +21,17 @@ interface CinemaTabProps {
 
 export function CinemaTab({ state, update }: CinemaTabProps): React.ReactElement {
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [modelOptions, setModelOptions] = useState<{ value: string; label: string; providerColor: string }[]>([]);
   const store = useStudioStore();
   const resultUrlRef = useRef(state.resultUrl);
   resultUrlRef.current = state.resultUrl;
 
-  const handleGenerate = useCallback(() => {
+  // Load image model options from IndexedDB (cinema uses image models)
+  useEffect(() => {
+    import('@/lib/model-options').then(m => m.getImageModelOptions()).then(setModelOptions);
+  }, []);
+
+  const handleGenerate = useCallback(async () => {
     // Inject camera settings suffix into the prompt
     const suffix = translateCinemaSettings(
       state.lensType,
@@ -44,7 +47,7 @@ export function CinemaTab({ state, update }: CinemaTabProps): React.ReactElement
       timestamp: Date.now(),
     };
     update({ resultUrl, history: [...state.history, newEntry] });
-    saveGeneration({
+    await saveGeneration({
       model: state.model,
       provider: state.model.split('-')[0] ?? 'unknown',
       prompt: fullPrompt,
@@ -88,7 +91,7 @@ export function CinemaTab({ state, update }: CinemaTabProps): React.ReactElement
             label="Model"
             value={state.model}
             onChange={(model) => update({ model })}
-            options={MODEL_OPTIONS}
+            options={modelOptions}
           />
           <CinemaCameraControls
             lensType={state.lensType}

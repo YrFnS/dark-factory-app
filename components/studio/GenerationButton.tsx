@@ -174,10 +174,11 @@ export function useGenerate() {
     setLoading(true);
 
     try {
-      const modelInfo = getModelById(model);
+      const [modelInfo, apiKeys] = await Promise.all([
+        getModelById(model),
+        getApiKeys(),
+      ]);
       const provider = modelInfo?.provider ?? model.split('-')[0] ?? 'openai';
-
-      const apiKeys = getApiKeys();
       const apiKey = (apiKeys as Record<string, string | undefined>)[provider];
 
       if (!apiKey) {

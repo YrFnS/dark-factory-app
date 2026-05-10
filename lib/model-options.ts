@@ -1,9 +1,11 @@
 /**
- * Model options helper — bridges lib/models.ts to UI components.
+ * lib/model-options.ts — Model options helper.
  * Exports typed option arrays for dropdown components.
+ * Reads ONLY from IndexedDB customModels store.
  */
 
-import { MODELS, PROVIDER_COLORS, getCustomModels } from '@/lib/models';
+import { getAllModels, PROVIDER_COLORS } from '@/lib/models';
+import type { CustomModel } from '@/lib/models';
 
 export { getModelInputs } from '@/lib/models';
 
@@ -13,22 +15,24 @@ interface ModelOption {
   providerColor: string;
 }
 
-export function getImageModelOptions(): ModelOption[] {
-  const custom = getCustomModels().filter((m) => m.type === 'image');
-  const builtIn = MODELS.filter((m) => m.type === 'image');
-  return [...builtIn, ...custom].map((m) => ({
-    value: m.id,
-    label: m.name,
-    providerColor: PROVIDER_COLORS[m.provider] ?? '#888888',
-  }));
+export async function getImageModelOptions(): Promise<ModelOption[]> {
+  const all = await getAllModels();
+  return all
+    .filter((m: CustomModel) => m.type === 'image')
+    .map((m: CustomModel) => ({
+      value: m.id,
+      label: m.name,
+      providerColor: PROVIDER_COLORS[m.provider] ?? '#888888',
+    }));
 }
 
-export function getVideoModelOptions(): ModelOption[] {
-  const custom = getCustomModels().filter((m) => m.type === 'video');
-  const builtIn = MODELS.filter((m) => m.type === 'video');
-  return [...builtIn, ...custom].map((m) => ({
-    value: m.id,
-    label: m.name,
-    providerColor: PROVIDER_COLORS[m.provider] ?? '#888888',
-  }));
+export async function getVideoModelOptions(): Promise<ModelOption[]> {
+  const all = await getAllModels();
+  return all
+    .filter((m: CustomModel) => m.type === 'video')
+    .map((m: CustomModel) => ({
+      value: m.id,
+      label: m.name,
+      providerColor: PROVIDER_COLORS[m.provider] ?? '#888888',
+    }));
 }

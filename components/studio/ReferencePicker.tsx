@@ -1,11 +1,10 @@
 /**
  * ReferencePicker — multi-image upload + history tab.
- * Extracted from StudioControls.tsx (inline stub).
  */
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getUploadHistory, saveUpload, removeUpload } from '@/lib/storage';
 import type { UploadRecord } from '@/lib/storage';
 
@@ -51,13 +50,20 @@ export function ReferencePicker({
   multiple = false,
 }: ReferencePickerProps): React.ReactElement {
   const [activePickerTab, setActivePickerTab] = useState<'upload' | 'history'>('upload');
+  const [history, setHistory] = useState<UploadRecord[]>([]);
+
+  // Load history on mount
+  useEffect(() => {
+    getUploadHistory().then(setHistory);
+  }, []);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const dataUrl = await fileToDataUrl(file);
     const thumbnail = await generateThumbnail(dataUrl);
-    saveUpload({ dataUrl, thumbnail });
+    const record = await saveUpload({ dataUrl, thumbnail });
+    setHistory((prev) => [record, ...prev]);
     if (multiple) {
       const current = value ? (Array.isArray(value) ? value : [value]) : [];
       onChange([...current, dataUrl]);
@@ -75,14 +81,12 @@ export function ReferencePicker({
     }
   };
 
-  const handleHistoryRemove = (e: React.MouseEvent, id: string) => {
+  const handleHistoryRemove = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
-    removeUpload(id);
-    setActivePickerTab((t) => (t === 'history' ? 'upload' : 'history'));
-    setActivePickerTab('history');
+    await removeUpload(id);
+    setHistory((prev) => prev.filter((r) => r.id !== id));
+    setActivePickerTab('upload');
   };
-
-  const history = getUploadHistory();
 
   return (
     <div className="ref-picker">
@@ -104,17 +108,19 @@ export function ReferencePicker({
         </button>
       </div>
 
-      {activePickerTab === 'upload' ? (
-        <div className="ref-drop-zone">
-          {value && !multiple && (
-            <img src={value} alt="Reference" className="ref-thumb" />
-          )}
-          <label className="ref-upload-btn">
-            <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
-            {value ? 'Change' : 'Upload'}
-          </label>
+      {activePickerTab === 'upload' && (
+        <div className="ref-upload-area">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="ref-file-input"
+          />
+          <p className="ref-upload-hint">Click or drag to upload</p>
         </div>
-      ) : (
+      )}
+
+      {activePickerTab === 'history' && (
         <div className="ref-history-grid">
           {history.length === 0 ? (
             <span className="ref-history-empty">No uploads yet</span>
@@ -124,7 +130,6 @@ export function ReferencePicker({
                 key={record.id}
                 className="ref-history-item"
                 onClick={() => handleHistorySelect(record)}
-                title={new Date(record.timestamp).toLocaleString()}
               >
                 <img src={record.thumbnail} alt="Uploaded" className="ref-history-thumb" />
                 <button
@@ -142,61 +147,84 @@ export function ReferencePicker({
       )}
 
       <style jsx>{`
-        .ref-picker { display: flex; flex-direction: column; gap: 6px; }
-        .field-label { font-size: 0.7rem; font-weight: 600; color: #6b6b78; text-transform: uppercase; letter-spacing: 0.08em; }
-        .ref-tabs { display: flex; gap: 2px; background: #161618; border-radius: 6px; padding: 3px; }
+        .ref-picker { display: flex; flex-direction: column; gap: 8px; }
+        .field-label {
+          font-size: 0.72rem;
+          font-weight: 600;
+          color: #6b6b78;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+        }
+        .ref-tabs { display: flex; gap: 4px; }
         .ref-tab {
-          flex: 1; padding: 5px 10px; background: transparent; border: none;
-          color: #6b6b78; font-size: 0.7rem; font-weight: 500; cursor: pointer;
-          border-radius: 4px; transition: background 0.15s, color 0.15s; font-family: inherit;
-        }
-        .ref-tab--active { background: #2a2a2e; color: #e2e2e8; }
-        .ref-tab:hover:not(.ref-tab--active) { color: #aaa; }
-        .ref-drop-zone {
-          background: #161618;
-          border: 1px dashed #2a2a2e;
-          border-radius: 6px;
-          min-height: 80px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 12px;
-          padding: 12px;
-        }
-        .ref-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 4px; }
-        .ref-upload-btn {
-          font-size: 0.75rem;
-          color: #d9ff00;
-          cursor: pointer;
-          padding: 6px 12px;
-          border: 1px solid #d9ff00;
-          transition: background 0.2s;
-        }
-        .ref-upload-btn:hover { background: rgba(217,255,0,0.1); }
-        .ref-history-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
-          gap: 6px;
           background: #161618;
           border: 1px solid #2a2a2e;
+          color: #a1a1aa;
+          padding: 6px 12px;
           border-radius: 6px;
-          padding: 8px;
-          min-height: 80px;
+          font-size: 0.78rem;
+          cursor: pointer;
+          transition: all 0.15s;
+        }
+        .ref-tab--active {
+          background: #1a1a1f;
+          border-color: #d9ff00;
+          color: #d9ff00;
+        }
+        .ref-upload-area {
+          background: #161618;
+          border: 1px dashed #2a2a2e;
+          border-radius: 8px;
+          padding: 24px;
+          text-align: center;
+          position: relative;
+        }
+        .ref-file-input {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          cursor: pointer;
+          width: 100%;
+          height: 100%;
+        }
+        .ref-upload-hint {
+          font-size: 0.78rem;
+          color: #52525b;
+          margin: 0;
+        }
+        .ref-history-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+          gap: 8px;
         }
         .ref-history-empty { font-size: 0.7rem; color: #52525b; text-align: center; padding: 16px 0; }
         .ref-history-item {
-          position: relative; cursor: pointer; border-radius: 4px; overflow: hidden;
+          position: relative;
+          aspect-ratio: 1;
+          border-radius: 6px;
+          overflow: hidden;
+          cursor: pointer;
+          border: 1px solid #2a2a2e;
+          transition: border-color 0.15s;
         }
-        .ref-history-item:hover .ref-history-remove { opacity: 1; }
-        .ref-history-thumb { width: 56px; height: 56px; object-fit: cover; display: block; border-radius: 4px; }
+        .ref-history-item:hover { border-color: #d9ff00; }
+        .ref-history-thumb { width: 100%; height: 100%; object-fit: cover; }
         .ref-history-remove {
-          position: absolute; top: 2px; right: 2px; width: 18px; height: 18px;
-          background: rgba(0,0,0,0.75); border: none; border-radius: 50%;
-          color: #fff; font-size: 0.8rem; line-height: 1; cursor: pointer;
-          display: flex; align-items: center; justify-content: center;
-          opacity: 0; transition: opacity 0.15s;
+          position: absolute;
+          top: 2px;
+          right: 2px;
+          background: rgba(0,0,0,0.7);
+          color: #fff;
+          border: none;
+          border-radius: 50%;
+          width: 18px;
+          height: 18px;
+          font-size: 12px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
-        .ref-history-remove:hover { background: rgba(220,38,38,0.9); }
       `}</style>
     </div>
   );

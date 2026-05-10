@@ -11,10 +11,7 @@ import { PromptInput, ReferencePicker, StylePresets, SmartControls, GenerationBu
 import { ModelSelector } from '@/components/studio/ModelSelector';
 import { ResultPanel } from '@/components/studio/ResultPanel';
 import { HistoryPanel } from '@/components/studio/HistoryPanel';
-import { getImageModelOptions, getModelInputs } from '@/lib/model-options';
 import { saveGeneration } from '@/lib/storage';
-
-const MODEL_OPTIONS = getImageModelOptions();
 
 interface ImageTabProps {
   state: ImageTabState;
@@ -23,15 +20,33 @@ interface ImageTabProps {
 
 export function ImageTab({ state, update }: ImageTabProps): React.ReactElement {
   const [historyOpen, setHistoryOpen] = useState(false);
-  const modelInputs = getModelInputs(state.model);
+  const [modelInputs, setModelInputs] = useState<import('@/lib/models').ModelInputs | null>(null);
+  const [modelOptions, setModelOptions] = useState<{ value: string; label: string; providerColor: string }[]>([]);
   const { generate, loading } = useGenerate();
   const store = useStudioStore();
   const resultUrlRef = useRef(state.resultUrl);
   resultUrlRef.current = state.resultUrl;
 
-  const handleGenerateSuccess = useCallback((resultUrl: string) => {
+  // Load model inputs and options from IndexedDB
+  useEffect(() => {
+    async function load() {
+      const [inputs, opts] = await Promise.all([
+        import('@/lib/models').then(m => m.getModelInputs(state.model)),
+        import('@/lib/model-options').then(m => m.getImageModelOptions()),
+      ]);
+      setModelInputs(inputs ?? null);
+      setModelOptions(opts);
+    }
+    if (state.model) load();
+    else {
+      setModelInputs(null);
+      import('@/lib/model-options').then(m => m.getImageModelOptions()).then(setModelOptions);
+    }
+  }, [state.model]);
+
+  const handleGenerateSuccess = useCallback(async (resultUrl: string) => {
     if (resultUrl && resultUrl.startsWith('http')) {
-      saveGeneration({
+      await saveGeneration({
         model: state.model,
         provider: state.model.split('-')[0] ?? 'unknown',
         prompt: state.prompt,
@@ -102,7 +117,7 @@ export function ImageTab({ state, update }: ImageTabProps): React.ReactElement {
             label="Model"
             value={state.model}
             onChange={(model) => update({ model })}
-            options={MODEL_OPTIONS}
+            options={modelOptions}
           />
           <ReferencePicker
             label="Reference Image (optional)"
@@ -117,7 +132,7 @@ export function ImageTab({ state, update }: ImageTabProps): React.ReactElement {
           <SmartControls
             seed={state.seed}
             onSeedChange={(seed) => update({ seed })}
-            {...(modelInputs !== undefined ? { modelInputs } : {})}
+            {...(modelInputs !== null ? { modelInputs } : {})}
             {...(state.aspectRatio !== undefined ? { aspectRatio: state.aspectRatio } : {})}
             onAspectRatioChange={(aspectRatio) => update({ aspectRatio })}
             {...(state.width !== undefined ? { width: state.width } : {})}
