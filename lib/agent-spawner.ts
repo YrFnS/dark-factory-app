@@ -38,13 +38,29 @@ export const DEFAULT_TIMEOUT_MS = 10 * 60 * 1000;
 /** Maximum number of retry attempts. */
 const MAX_RETRIES = 3;
 
-/** Node.js binary path used to prefix all spawned processes. */
-const NODE_PATH = '/home/lich/.hermes/node/bin/';
+/**
+ * Resolves the Node.js binary path used to prefix all spawned processes.
+ * Prefers HERMES_NODE_BIN env var, then searches PATH for a 'node' binary.
+ */
+function resolveNodePath(): string {
+  if (process.env.HERMES_NODE_BIN) {
+    return process.env.HERMES_NODE_BIN;
+  }
+  // Find node in PATH — use the dirname of the first 'node' found
+  const pathParts = (process.env.PATH ?? '').split(':');
+  for (const dir of pathParts) {
+    if (dir && fs.existsSync(path.join(dir, 'node'))) {
+      return dir;
+    }
+  }
+  // Fallback to empty string (system node will be found via standard PATH)
+  return '';
+}
 
 /**
  * Resolves the Claude Code CLI path by checking common installation locations.
  */
-function resolveClauclCodePath(): string {
+function resolveClaudeCodePath(): string {
   const candidates = [
     path.join(process.env.HOME ?? '/root', '.local', 'bin', 'claude'),
     '/usr/local/bin/claude',
@@ -218,7 +234,7 @@ function spawnAgentOnce(
 
     // Build Claude Code arguments
     // --output-format json-streams gives per-line structured output
-    const claudePath = resolveClauclCodePath();
+    const claudePath = resolveClaudeCodePath();
     const args = [
       'code',
       '--output-format', 'json-streams',
@@ -226,11 +242,12 @@ function spawnAgentOnce(
       '--task', task,
     ];
 
+    const nodePath = resolveNodePath();
     const proc = spawn(claudePath, args, {
       cwd: workDir,
       env: {
         ...process.env,
-        PATH: NODE_PATH + ':' + (process.env.PATH ?? ''),
+        PATH: nodePath ? nodePath + ':' + (process.env.PATH ?? '') : process.env.PATH,
       },
       stdio: ['ignore', 'pipe', 'pipe'],
     });

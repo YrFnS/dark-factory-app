@@ -1,4 +1,29 @@
-import { chromium } from '/home/lich/.hermes/node/lib/node_modules/playwright/index.mjs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import * as fs from 'fs';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+function resolvePlaywright() {
+  if (process.env.PLAYWRIGHT_PATH) {
+    return process.env.PLAYWRIGHT_PATH;
+  }
+  // Walk up from this file's directory looking for playwright
+  let dir = __dirname;
+  for (let i = 0; i < 10; i++) {
+    const candidate = join(dir, 'node_modules', 'playwright', 'index.mjs');
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+    const parent = join(dir, '..');
+    if (parent === dir) break;
+    dir = parent;
+  }
+  throw new Error('Could not resolve playwright. Set PLAYWRIGHT_PATH env var.');
+}
+
+const playwrightPath = resolvePlaywright();
+const { chromium } = await import(playwrightPath);
 
 const BASE = 'http://213.199.56.120:3001';
 

@@ -7,7 +7,8 @@ function readPhaseFromState(statePath: string): number {
     const content: string = fs.readFileSync(statePath, 'utf-8');
     const state = JSON.parse(content) as { currentPhase: number };
     return state.currentPhase;
-  } catch {
+  } catch (err) {
+    console.error(`[log-writer] Failed to read phase from state file ${statePath}:`, err);
     return 0;
   }
 }
