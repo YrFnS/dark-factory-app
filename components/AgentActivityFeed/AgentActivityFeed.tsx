@@ -1,7 +1,13 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import type { LogEntry } from '@/pipeline/phase-3/code/lib/agent-log-stream';
+
+interface LogEntry {
+  agent: string;
+  message: string;
+  level: 'STDOUT' | 'STDERR';
+  timestamp: string;
+}
 
 interface AgentActivity {
   agent: string;
